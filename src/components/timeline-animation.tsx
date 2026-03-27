@@ -30,8 +30,8 @@ export const TimelineAnimation = <
       y: 0,
       opacity: 1,
       transition: {
-        delay: i * 0.5,
-        duration: 0.5,
+        delay: i * 0.02,
+        duration: 0.3,
       },
     }),
     hidden: {

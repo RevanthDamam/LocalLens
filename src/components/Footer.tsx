@@ -8,8 +8,11 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex items-center gap-2 font-display text-lg font-bold">
-              <MapPin className="h-5 w-5 text-primary" />
-              LocalLens
+              <svg viewBox="0 0 24 24" fill="none" className="stroke-primary h-5 w-5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Locably
             </div>
             <p className="mt-2 text-sm text-muted-foreground">
               Helping communities thrive by connecting people with their best local businesses.
@@ -47,7 +50,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t pt-6 text-center text-sm text-muted-foreground">
-          © 2024 LocalLens Inc. All rights reserved.
+          © 2024 Locably Inc. All rights reserved.
         </div>
       </div>
     </footer>

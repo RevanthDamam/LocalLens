@@ -42,9 +42,12 @@ export function Navbar() {
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold text-foreground">
           <motion.div whileHover={{ rotate: [0, -10, 10, 0] }} transition={{ duration: 0.4 }}>
-            <MapPin className="h-6 w-6 text-primary" />
+            <svg viewBox="0 0 24 24" fill="none" className="stroke-primary h-6 w-6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
           </motion.div>
-          LocalLens
+          Locably
         </Link>
 
         {/* Desktop nav */}

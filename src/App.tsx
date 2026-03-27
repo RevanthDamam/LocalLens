@@ -7,14 +7,15 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { AIChat } from "@/components/AIChat";
-import Index from "./pages/Index";
-import Explore from "./pages/Explore";
-import ShopDetails from "./pages/ShopDetails";
-import Categories from "./pages/Categories";
-import MerchantDashboard from "./pages/MerchantDashboard";
-import MerchantProfile from "./pages/MerchantProfile";
-import MerchantAuth from "./pages/MerchantAuth";
-import NotFound from "./pages/NotFound";
+import Index from "@/pages/Index";
+import Explore from "@/pages/Explore";
+import ShopDetails from "@/pages/ShopDetails";
+import Categories from "@/pages/Categories";
+import MerchantDashboard from "@/pages/MerchantDashboard";
+import MerchantProfile from "@/pages/MerchantProfile";
+import MerchantAuth from "@/pages/MerchantAuth";
+import MapViewPage from "@/pages/MapViewPage";
+import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ function AnimatedRoutes() {
           <Route path="/merchant" element={<MerchantDashboard />} />
           <Route path="/merchant/profile" element={<MerchantProfile />} />
           <Route path="/merchant/auth" element={<MerchantAuth />} />
+          <Route path="/map" element={<MapViewPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </motion.div>

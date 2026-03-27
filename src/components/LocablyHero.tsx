@@ -6,7 +6,7 @@ import MotionDrawer from '@/components/motion-drawer'
 import { Link } from 'react-router-dom'
 import { Button } from './ui/button'
 
-export const LocalLensHero = () => {
+export const LocablyHero = () => {
   const timelineRef = useRef<HTMLDivElement>(null)
   const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -28,8 +28,11 @@ export const LocalLensHero = () => {
           >
             <nav className="space-y-4 ">
               <div className="flex items-center gap-2 text-primary">
-                <MapPin className="w-8 h-8" />
-                <span className="font-display font-bold text-xl">LocalLens</span>
+                <svg viewBox="0 0 24 24" fill="none" className="stroke-primary w-8 h-8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <span className="font-display font-bold text-xl">Locably</span>
               </div>
               <Link
                 to="/explore"
@@ -72,8 +75,11 @@ export const LocalLensHero = () => {
             className="flex items-center gap-2"
           >
             <div className="flex items-center gap-2 text-primary">
-              <MapPin className="w-8 h-8" />
-              <span className="font-display font-bold text-2xl">LocalLens</span>
+              <svg viewBox="0 0 24 24" fill="none" className="stroke-primary w-8 h-8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              <span className="font-display font-bold text-2xl">Locably</span>
             </div>
           </TimelineAnimation>
           <TimelineAnimation
@@ -114,32 +120,7 @@ export const LocalLensHero = () => {
         }}
       />
       <div className="relative z-10 grow flex flex-col items-center justify-center text-center px-4 pt-10">
-        <TimelineAnimation
-          timelineRef={timelineRef}
-          animationNum={3}
-          className="flex items-center gap-2 bg-orange-100 px-4 py-2 rounded-full border border-orange-200 shadow-sm mb-8"
-        >
-          <div className="flex -space-x-3">
-            <img
-              className="w-7 h-7 rounded-full border-2 border-white"
-              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop"
-              alt="User"
-            />
-            <img
-              className="w-7 h-7 rounded-full border-2 border-white"
-              src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop"
-              alt="User"
-            />
-            <img
-              className="w-7 h-7 rounded-full border-2 border-white"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop"
-              alt="User"
-            />
-          </div>
-          <span className="text-sm font-bold text-orange-800">
-            Trusted by 5,000+ Local Shoppers
-          </span>
-        </TimelineAnimation>
+
 
         <h1 className="text-7xl md:text-9xl font-black tracking-tighter text-neutral-800 max-w-5xl leading-[0.9] mb-10">
           <TimelineAnimation
