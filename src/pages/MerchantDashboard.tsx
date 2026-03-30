@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { HeroAiEcommerce } from "@/components/hero-ai-ecommerce";
 import { TimelineAnimation } from "@/components/timeline-animation";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type Tab = "overview" | "shop" | "reviews" | "analytics";
 
@@ -202,11 +203,11 @@ const MerchantDashboard = () => {
   ];
 
   return (
-    <section ref={dashboardRef} className="bg-[#f8f9fa] min-h-screen">
+    <section ref={dashboardRef} className="bg-background min-h-screen">
       <HeroAiEcommerce showHero={false} showNav={false}>
-        <div className="flex min-h-[90vh] overflow-hidden rounded-3xl bg-white shadow-2xl border border-neutral-100">
+        <div className="flex min-h-[90vh] overflow-hidden rounded-3xl bg-card shadow-2xl border border-border">
           {/* Sidebar */}
-          <aside className="w-64 border-r border-neutral-100 bg-white p-6 flex flex-col">
+          <aside className="w-64 border-r border-border bg-card p-6 flex flex-col z-20">
             <div className="flex items-center gap-3 px-2 mb-10">
               <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center p-2 shadow-lg shadow-orange-500/30">
                 <svg
@@ -223,13 +224,13 @@ const MerchantDashboard = () => {
                   <path d="M10 12h4" />
                 </svg>
               </div>
-              <span className="font-display font-bold text-xl tracking-tight text-neutral-900">Locably</span>
+              <span className="font-display font-bold text-xl text-foreground uppercase italic tracking-tighter">Locably</span>
             </div>
 
             <nav className="flex-1 space-y-1">
               <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 px-3 mb-2">Management</div>
               {[
-                { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
+                 { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
                 { id: 'shop', label: 'Shop Profile', icon: Store },
                 { id: 'reviews', label: 'Reviews', icon: Star },
                 { id: 'analytics', label: 'Analytics', icon: BarChart3 },
@@ -247,8 +248,8 @@ const MerchantDashboard = () => {
                   }}
                   className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
                     activeTab === item.id
-                      ? "bg-orange-50 text-orange-600"
-                      : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   }`}
                 >
                   <item.icon className="h-4 w-4" />
@@ -256,11 +257,11 @@ const MerchantDashboard = () => {
                 </button>
               ))}
 
-              <div className="pt-8 mb-4 border-t border-neutral-50 mx-2">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 px-3 mb-2">Account</div>
+              <div className="pt-8 mb-4 border-t border-border mx-2">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-3 mb-2">Account</div>
                 <button
                   onClick={() => navigate('/merchant/profile')}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 transition-all"
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
                 >
                   <User className="h-4 w-4" />
                   <span className="flex-1 text-left font-display">My Profile</span>
@@ -280,26 +281,30 @@ const MerchantDashboard = () => {
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 flex flex-col bg-white/5">
+          <main className="flex-1 flex flex-col bg-background/50 overflow-hidden">
             {/* Header */}
-            <header className="h-16 flex items-center justify-between px-8 bg-white border-b border-neutral-50">
-              <h2 className="font-bold text-lg text-neutral-900">Overview</h2>
+            <header className="h-16 flex items-center justify-between px-8 bg-card border-b border-border shadow-sm">
+              <h2 className="font-bold text-lg text-foreground uppercase tracking-tight italic">
+                {tabs.find(t => t.id === activeTab)?.label || "Dashboard"}
+              </h2>
               <div className="flex items-center gap-6">
-                <div className="flex items-center gap-3 border-l pl-6 border-neutral-100">
-                  <button className="text-neutral-400 hover:text-neutral-600 transition-colors">
+                <div className="flex items-center gap-3 border-l pl-6 border-border">
+                  <ThemeToggle />
+                  <div className="w-px h-4 bg-border/50 mx-1" />
+                  <button className="text-muted-foreground hover:text-foreground transition-colors">
                     <HelpCircle className="h-5 w-5" />
                   </button>
-                  <button className="text-neutral-400 hover:text-neutral-600 transition-colors relative">
+                  <button className="text-muted-foreground hover:text-foreground transition-colors relative">
                     <Bell className="h-5 w-5" />
                     <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 border border-white rounded-full"></span>
                   </button>
                   <div className="ml-2 flex items-center gap-3 pl-2">
-                    <div className="flex h-10 w-10 overflow-hidden rounded-full border-2 border-white bg-neutral-100 shadow-sm">
-                       {shop?.image ? <img src={shop.image} className="h-full w-full object-cover" /> : <User className="p-2 text-neutral-400" />}
+                    <div className="flex h-10 w-10 overflow-hidden rounded-full border-2 border-background bg-muted shadow-sm">
+                       {shop?.image ? <img src={shop.image} className="h-full w-full object-cover" /> : <User className="p-2 text-muted-foreground" />}
                     </div>
                     <div className="hidden sm:block text-left">
-                      <div className="text-xs font-bold leading-none">{shopName || "Al Razi"}</div>
-                      <div className="mt-1 text-[10px] text-neutral-400">@{user?.email?.split('@')[0] || "jhone"}</div>
+                      <div className="text-xs font-bold leading-none text-foreground">{shopName || "Al Razi"}</div>
+                      <div className="mt-1 text-[10px] text-muted-foreground">@{user?.email?.split('@')[0] || "jhone"}</div>
                     </div>
                   </div>
                 </div>
@@ -319,13 +324,13 @@ const MerchantDashboard = () => {
                   {activeTab === "shop" ? (
                     <div className="space-y-8">
                       {/* Shop Profile Block */}
-                      <TimelineAnimation animationNum={1} timelineRef={hasEntered ? { current: document.body } : dashboardRef} className="rounded-[32px] border border-neutral-100 bg-white p-8 shadow-sm">
+                      <TimelineAnimation animationNum={1} timelineRef={hasEntered ? { current: document.body } : dashboardRef} className="rounded-[32px] border border-border bg-card p-8 shadow-sm">
                         <div className="mb-8 flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
                           <div>
-                            <h2 className="text-2xl font-bold font-display">Shop Profile</h2>
-                            <p className="text-sm font-medium text-neutral-400">Update your public storefront information</p>
+                            <h2 className="text-2xl font-bold font-display text-foreground">Shop Profile</h2>
+                            <p className="text-sm font-medium text-muted-foreground">Update your public storefront information</p>
                           </div>
-                          <Button onClick={handleSaveShop} className="rounded-full px-8 py-6 font-bold shadow-lg shadow-orange-500/20 bg-orange-600 hover:bg-orange-700 hover:scale-105 transition-all text-white">
+                          <Button onClick={handleSaveShop} className="rounded-full px-8 py-6 font-bold shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90 hover:scale-105 transition-all text-white">
                             Save Changes
                           </Button>
                         </div>
@@ -334,17 +339,17 @@ const MerchantDashboard = () => {
                           <div className="space-y-6">
                             <div className="grid gap-6 sm:grid-cols-2">
                               <div>
-                                <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">Shop Name</label>
+                                <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Shop Name</label>
                                 <input 
-                                  className="w-full rounded-xl border border-neutral-100 bg-neutral-50 px-4 py-3 text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-100 transition-all text-neutral-900 shadow-xs" 
+                                  className="w-full rounded-xl border border-border bg-muted/50 px-4 py-3 text-sm font-medium focus:bg-card focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all text-foreground shadow-xs" 
                                   value={shopName} onChange={e => setShopName(e.target.value)} 
                                   placeholder="The Local Bistro"
                                 />
                               </div>
                               <div>
-                                <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">Category</label>
+                                <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Category</label>
                                 <select 
-                                  className="w-full rounded-xl border border-neutral-100 bg-neutral-50 px-4 py-3 text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-100 transition-all text-neutral-900 shadow-xs"
+                                  className="w-full rounded-xl border border-border bg-muted/50 px-4 py-3 text-sm font-medium focus:bg-card focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all text-foreground shadow-xs"
                                   value={shopCategory} onChange={e => setShopCategory(e.target.value)}
                                 >
                                   {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
@@ -355,7 +360,7 @@ const MerchantDashboard = () => {
                               <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">Description</label>
                               <textarea 
                                 rows={4}
-                                className="w-full rounded-xl border border-neutral-100 bg-neutral-50 px-4 py-3 text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-100 transition-all text-neutral-900 shadow-xs"
+                                className="w-full rounded-xl border border-border bg-muted/30 px-4 py-3 text-sm font-medium focus:bg-card focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all text-foreground shadow-xs"
                                 value={shopDescription} onChange={e => setShopDescription(e.target.value)}
                                 placeholder="Tell your story..."
                               />
@@ -369,19 +374,19 @@ const MerchantDashboard = () => {
                           </div>
                         </div>
 
-                        <div className="mt-10 border-t border-neutral-50 pt-8 text-neutral-900">
-                          <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">Location Details</label>
+                        <div className="mt-10 border-t border-border pt-8 text-foreground">
+                          <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Location Details</label>
                           <div className="mb-6">
                             <div className="relative">
-                              <MapPin className="absolute left-4 top-3.5 h-5 w-5 text-neutral-400" />
+                              <MapPin className="absolute left-4 top-3.5 h-5 w-5 text-muted-foreground" />
                               <input 
                                 placeholder="123 Gastronomy St, Foodville"
-                                className="w-full rounded-xl border border-neutral-100 bg-neutral-50 pl-12 pr-4 py-3.5 text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-100 transition-all text-neutral-900"
+                                className="w-full rounded-xl border border-border bg-muted/50 pl-12 pr-4 py-3.5 text-sm font-medium focus:bg-card focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all text-foreground"
                                 value={shopAddress} onChange={e => setShopAddress(e.target.value)}
                               />
                             </div>
                           </div>
-                          <div className="rounded-2xl border border-neutral-50 bg-neutral-50 p-1">
+                          <div className="rounded-2xl border border-border bg-muted/30 p-1">
                             <MapPinPicker 
                                position={shopLatitude && shopLongitude ? [parseFloat(shopLatitude), parseFloat(shopLongitude)] : null} 
                                onChange={([lat, lng]) => { setShopLatitude(lat.toString()); setShopLongitude(lng.toString()); }} 
@@ -391,23 +396,23 @@ const MerchantDashboard = () => {
                       </TimelineAnimation>
 
                       {/* Inventory Section */}
-                      <TimelineAnimation animationNum={2} timelineRef={hasEntered ? { current: document.body } : dashboardRef} className="rounded-[32px] border border-neutral-100 bg-white p-8 shadow-sm">
+                      <TimelineAnimation animationNum={2} timelineRef={hasEntered ? { current: document.body } : dashboardRef} className="rounded-[32px] border border-border bg-card p-8 shadow-sm">
                         <div className="mb-8 flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
                           <div>
-                            <h2 className="text-2xl font-bold font-display">Products & Menu</h2>
-                            <p className="text-sm font-medium text-neutral-400">Manage your offerings and pricing</p>
+                            <h2 className="text-2xl font-bold font-display text-foreground">Products & Menu</h2>
+                            <p className="text-sm font-medium text-muted-foreground">Manage your offerings and pricing</p>
                           </div>
-                          <Button onClick={openAddItem} variant="outline" className="rounded-full gap-2 border-orange-600 bg-white font-bold text-orange-600 hover:bg-orange-600 hover:text-white shadow-sm transition-all px-6 py-5">
+                          <Button onClick={openAddItem} variant="outline" className="rounded-full gap-2 border-primary bg-card font-bold text-primary hover:bg-primary hover:text-white shadow-sm transition-all px-6 py-5">
                             <Plus className="h-4 w-4" /> Add Item
                           </Button>
                         </div>
                         
                         {(!items || items.length === 0) ? (
-                          <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-neutral-50 bg-neutral-50 py-16 text-center text-neutral-400">
-                            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-xs">
-                              <ImageIcon className="h-8 w-8 opacity-40 text-orange-600" />
+                          <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-muted/30 py-16 text-center text-muted-foreground">
+                            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-card shadow-xs">
+                              <ImageIcon className="h-8 w-8 opacity-40 text-primary" />
                             </div>
-                            <p className="text-lg font-bold text-neutral-900">No menu items yet</p>
+                            <p className="text-lg font-bold text-foreground">No menu items yet</p>
                             <p className="mt-1 text-sm font-medium">Add your first item to start selling.</p>
                           </div>
                         ) : (
@@ -423,14 +428,14 @@ const MerchantDashboard = () => {
                                     <ImageIcon className="h-10 w-10 text-orange-600/20" />
                                   </div>
                                 )}
-                                <div className="flex flex-1 flex-col p-6 text-neutral-900">
+                                <div className="flex flex-1 flex-col p-6 text-foreground">
                                   <div className="mb-2 flex items-start justify-between gap-2">
-                                    <h4 className="text-lg font-bold leading-tight font-display">{item.name}</h4>
-                                    <span className="shrink-0 rounded-lg bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-600">${(item.price || 0).toFixed(2)}</span>
+                                    <h4 className="text-lg font-bold leading-tight font-display text-foreground">{item.name}</h4>
+                                    <span className="shrink-0 rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary">${(item.price || 0).toFixed(2)}</span>
                                   </div>
-                                  <p className="mb-6 line-clamp-2 flex-1 text-sm font-medium text-neutral-400 leading-normal">{item.description}</p>
+                                  <p className="mb-6 line-clamp-2 flex-1 text-sm font-medium text-muted-foreground leading-normal">{item.description}</p>
                                   <div className="flex gap-3 border-t border-neutral-100 pt-4">
-                                    <Button size="sm" variant="secondary" className="w-full gap-2 rounded-xl font-bold bg-white hover:bg-white/80 border border-neutral-100" onClick={() => openEditItem(item)}>
+                                    <Button size="sm" variant="secondary" className="w-full gap-2 rounded-xl font-bold bg-card hover:bg-accent border border-border" onClick={() => openEditItem(item)}>
                                       <Edit className="h-4 w-4" /> Edit
                                     </Button>
                                     <Button size="sm" variant="destructive" className="w-full gap-2 rounded-xl font-bold bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white transition-colors" onClick={() => handleDeleteItem(item.id)}>
@@ -495,22 +500,22 @@ const MerchantDashboard = () => {
                       {/* Charts Grid */}
                       <div className="grid grid-cols-3 gap-8">
                         {/* Transaction Overview */}
-                        <div className="col-span-2 bg-white rounded-[32px] p-8 border border-neutral-100 shadow-sm">
+                        <div className="col-span-2 bg-card rounded-[32px] p-8 border border-border shadow-sm">
                           <div className="flex items-center justify-between mb-8">
-                            <h4 className="font-bold text-neutral-900 font-display">Transactions Overview</h4>
-                            <button className="text-xs font-bold text-neutral-400 bg-neutral-50 px-3 py-1.5 rounded-lg flex items-center gap-2 border border-neutral-100">
+                            <h4 className="font-bold text-foreground font-display">Transactions Overview</h4>
+                            <button className="text-xs font-bold text-muted-foreground bg-muted px-3 py-1.5 rounded-lg flex items-center gap-2 border border-border">
                               This Year <Settings className="h-3 w-3" />
                             </button>
                           </div>
                           <div className="flex items-baseline gap-2 mb-6">
-                            <span className="text-3xl font-black text-neutral-900">$8,435</span>
-                            <span className="text-neutral-400 font-bold">.00</span>
+                            <span className="text-3xl font-black text-foreground">$8,435</span>
+                            <span className="text-muted-foreground font-bold">.00</span>
                             <div className="flex gap-4 ml-auto">
-                                <div className="flex items-center gap-2 text-[10px] font-bold text-neutral-400">
+                                <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground">
                                     <div className="w-2 h-2 rounded-full bg-orange-500"></div> Total Sales
                                 </div>
-                                <div className="flex items-center gap-2 text-[10px] font-bold text-neutral-400">
-                                    <div className="w-2 h-2 rounded-full bg-neutral-200"></div> Earning
+                                <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground">
+                                    <div className="w-2 h-2 rounded-full bg-muted"></div> Earning
                                 </div>
                             </div>
                           </div>
@@ -530,14 +535,14 @@ const MerchantDashboard = () => {
                         </div>
 
                         {/* Sales Overview */}
-                        <div className="bg-white rounded-[32px] p-8 border border-neutral-100 shadow-sm">
+                        <div className="bg-card rounded-[32px] p-8 border border-border shadow-sm">
                            <div className="flex items-center gap-3 mb-6">
-                              <div className="p-2 bg-neutral-50 rounded-lg">
-                                 <LayoutDashboard className="h-4 w-4 text-neutral-900" />
+                              <div className="p-2 bg-muted rounded-lg">
+                                 <LayoutDashboard className="h-4 w-4 text-foreground" />
                               </div>
-                              <h4 className="font-bold text-neutral-900 font-display">Sales Overview</h4>
+                              <h4 className="font-bold text-foreground font-display">Sales Overview</h4>
                            </div>
-                           <div className="text-neutral-400 text-xs font-bold mb-1">Total Sales</div>
+                           <div className="text-muted-foreground text-xs font-bold mb-1">Total Sales</div>
                            <div className="flex items-center gap-3 mb-8">
                               <span className="text-3xl font-black text-neutral-900">8379</span>
                               <span className="text-emerald-500 text-[10px] font-bold flex items-center gap-0.5">
@@ -568,9 +573,9 @@ const MerchantDashboard = () => {
                       </div>
 
                       {/* Recent Orders */}
-                      <div className="bg-white rounded-[32px] p-8 border border-neutral-100 shadow-sm">
+                      <div className="bg-card rounded-[32px] p-8 border border-border shadow-sm">
                          <div className="flex items-center justify-between mb-8">
-                            <h4 className="font-bold text-neutral-900 font-display">Recent orders</h4>
+                            <h4 className="font-bold text-foreground font-display">Recent orders</h4>
                             <div className="flex gap-4">
                                <button className="text-xs font-bold text-neutral-500 bg-neutral-50 px-4 py-2 rounded-xl flex items-center gap-2 border border-neutral-100">
                                   Sort by <Settings className="h-3 w-3" />
@@ -608,11 +613,11 @@ const MerchantDashboard = () => {
                       </div>
                     </>
                   ) : (
-                    <div className="bg-white rounded-[32px] h-[500px] flex items-center justify-center border border-neutral-100 shadow-sm">
+                    <div className="bg-card rounded-[32px] h-[500px] flex items-center justify-center border border-border shadow-sm">
                       <div className="text-center">
-                        <BarChart3 className="h-12 w-12 text-orange-100 mx-auto mb-4" />
-                        <h3 className="font-bold text-xl text-neutral-900 font-display">The {activeTab} Section</h3>
-                        <p className="text-neutral-400 text-sm mt-1">This section is currently under development.</p>
+                        <BarChart3 className="h-12 w-12 text-primary/20 mx-auto mb-4" />
+                        <h3 className="font-bold text-xl text-foreground font-display">The {activeTab} Section</h3>
+                        <p className="text-muted-foreground text-sm mt-1">This section is currently under development.</p>
                       </div>
                     </div>
                   )}
@@ -645,7 +650,7 @@ const MerchantDashboard = () => {
                     <div className="grid gap-6 sm:grid-cols-2">
                         <div>
                           <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">Item Name</label>
-                          <input className="w-full flex-1 rounded-xl border border-neutral-100 bg-white px-4 py-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-orange-100 transition-all shadow-sm text-neutral-900" value={itemName} onChange={e => setItemName(e.target.value)} placeholder="e.g. Avocado Toast" />
+                          <input className="w-full flex-1 rounded-xl border border-border bg-muted/50 px-4 py-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all shadow-sm text-foreground" value={itemName} onChange={e => setItemName(e.target.value)} placeholder="e.g. Avocado Toast" />
                         </div>
                         <div>
                           <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">Price ($)</label>
@@ -655,7 +660,7 @@ const MerchantDashboard = () => {
                     
                     <div>
                       <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">Description</label>
-                      <textarea className="w-full rounded-xl border border-neutral-100 bg-white px-4 py-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-orange-100 transition-all shadow-sm text-neutral-900" rows={3} value={itemDescription} onChange={e => setItemDescription(e.target.value)} placeholder="Brief description of the item..." />
+                      <textarea className="w-full rounded-xl border border-border bg-muted/50 px-4 py-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all shadow-sm text-foreground" rows={3} value={itemDescription} onChange={e => setItemDescription(e.target.value)} placeholder="Brief description of the item..." />
                     </div>
                     
                     <div>
@@ -666,8 +671,8 @@ const MerchantDashboard = () => {
                     </div>
                     
                     <div className="pt-4 flex gap-4">
-                      <Button variant="outline" className="w-full py-7 rounded-2xl font-bold bg-white border-neutral-100 text-neutral-600" onClick={() => setShowItemDialog(false)}>Cancel</Button>
-                      <Button className="w-full py-7 rounded-2xl font-bold bg-orange-600 text-white shadow-lg shadow-orange-500/20 hover:scale-[1.02] active:scale-100 transition-all" onClick={handleSaveItem}>
+                      <Button variant="outline" className="w-full py-7 rounded-2xl font-bold bg-card border-border text-muted-foreground" onClick={() => setShowItemDialog(false)}>Cancel</Button>
+                      <Button className="w-full py-7 rounded-2xl font-bold bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-100 transition-all" onClick={handleSaveItem}>
                         {editingItem ? "Save Changes" : "Add Item"}
                       </Button>
                     </div>

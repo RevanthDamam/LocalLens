@@ -25,7 +25,7 @@ const Index = () => {
       {/* Features */}
       <section className="container py-20">
         <ScrollReveal>
-          <h2 className="text-center font-display text-3xl font-bold md:text-4xl">
+          <h2 className="text-center font-display text-3xl font-bold md:text-4xl text-foreground">
             Why <span className="text-gradient">Locably</span>?
           </h2>
           <p className="mx-auto mt-2 max-w-md text-center text-muted-foreground">
@@ -101,19 +101,19 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="relative overflow-hidden py-24 mb-0 bg-slate-50">
+      <section className="relative overflow-hidden py-24 mb-0 bg-background">
         <div 
           className="absolute inset-0 z-0" 
           style={{ background: 'radial-gradient(125% 125% at 50% 10%, #fff 40%, #ea580c 100%)' }}
         />
         <div className="container relative z-10 text-center">
           <ScrollReveal>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-800 mb-8 max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground mb-8 max-w-3xl mx-auto">
               Ready to Discover Your Neighborhood?
             </h2>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
-            <p className="text-xl text-neutral-700 font-bold mb-10 max-w-xl mx-auto">
+            <p className="text-xl text-foreground font-bold mb-10 max-w-xl mx-auto opacity-70">
               Join thousands of locals finding the best artisans, shops, and experiences in their city.
             </p>
           </ScrollReveal>

@@ -22,7 +22,7 @@ export const HeroAiEcommerce = ({
   subtitle = "Join AI-powered course communities that help you study faster, collaborate with peers, and excel in your classes.",
   badge = "Locably Platform",
   ctaText = "Start Your 14 Day Free Trial",
-  showNav = true,
+  showNav = false,
   showHero = true
 }: HeroAiEcommerceProps) => {
   const timelineRef = useRef<HTMLDivElement>(null)
@@ -33,7 +33,7 @@ export const HeroAiEcommerce = ({
   return (
     <section
       ref={timelineRef}
-      className="min-h-screen text-black bg-white relative overflow-hidden flex flex-col items-center"
+      className="min-h-screen text-foreground bg-background relative overflow-hidden flex flex-col items-center"
     >
       <div className="absolute inset-0 z-0 bg-orange-50/30">
         <motion.div 
@@ -58,10 +58,10 @@ export const HeroAiEcommerce = ({
           <MotionDrawer
             direction="left"
             width={300}
-            backgroundColor={'#ffffff'}
+            backgroundColor={'var(--background)'}
             clsBtnClassName="bg-neutral-800 border-r border-neutral-900 text-white"
-            contentClassName="bg-white border-r border-neutral-200 text-black"
-            btnClassName="bg-white text-black relative w-fit p-2 left-0 top-0 rounded-full shadow-xs border border-neutral-200"
+            contentClassName="bg-card border-r border-border text-foreground"
+            btnClassName="bg-card text-foreground relative w-fit p-2 left-0 top-0 rounded-full shadow-xs border border-border"
           >
             <nav className="space-y-4 ">
               <div className="flex items-center gap-2 text-black">
@@ -140,7 +140,7 @@ export const HeroAiEcommerce = ({
               as="button"
               animationNum={2}
               timelineRef={timelineRef}
-              className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-full shadow-xs border border-neutral-200 text-sm font-medium"
+              className="flex items-center gap-2 bg-card px-4 py-2.5 rounded-full shadow-xs border border-border text-sm font-medium text-foreground"
             >
               <LogIn size={16} /> Sign in
             </TimelineAnimation>
@@ -155,7 +155,7 @@ export const HeroAiEcommerce = ({
             as="h1"
             animationNum={3}
             timelineRef={timelineRef}
-            className="sm:text-6xl text-5xl md:text-7xl font-medium tracking-tight text-neutral-800 mb-8"
+            className="sm:text-6xl text-5xl md:text-7xl font-medium tracking-tight text-foreground mb-8"
           >
             {title}
             {badge && (
@@ -213,7 +213,7 @@ export const HeroAiEcommerce = ({
         <TimelineAnimation
           animationNum={7}
           timelineRef={timelineRef}
-          className="rounded-2xl bg-white/50 backdrop-blur-lg p-4"
+          className="rounded-2xl bg-card/50 backdrop-blur-lg p-4 border border-border"
         >
           {children ? (
             children

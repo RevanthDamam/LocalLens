@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { AIChat } from "@/components/AIChat";
+ import { Navbar } from "@/components/Navbar";
 import Index from "@/pages/Index";
 import Explore from "@/pages/Explore";
 import ShopDetails from "@/pages/ShopDetails";
@@ -53,7 +54,8 @@ const App = () => {
         <Toaster />
         <Sonner />
         <AnimatedBackground />
-        <BrowserRouter>
+         <BrowserRouter>
+          <Navbar />
           <div className="relative z-10">
             <AnimatedRoutes />
           </div>

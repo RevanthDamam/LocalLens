@@ -1,26 +1,31 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search, MapPin, AlertTriangle, Map as MapIcon, ArrowRight } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { Search, MapPin, AlertTriangle, Map as MapIcon, ArrowRight, LayoutGrid, SlidersHorizontal, ChevronLeft } from "lucide-react";
 import { ShopCard } from "@/components/ShopCard";
-import { CategoryChip } from "@/components/CategoryChip";
 import { ShopCardSkeleton } from "@/components/LoadingSkeleton";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useShops, shopToMap } from "@/hooks/useShops";
 import { CATEGORIES, DEFAULT_CENTER, getDistance, type Category } from "@/data/mockData";
 import type { Shop } from "@/data/mockData";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { HeroAiEcommerce } from "@/components/hero-ai-ecommerce";
+import { TimelineAnimation } from "@/components/timeline-animation";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Explore = () => {
   const [searchParams] = useSearchParams();
   const initialCat = searchParams.get("category") as Category | null;
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(initialCat);
   const [searchQuery, setSearchQuery] = useState("");
-  const { position, loading, permissionDenied } = useGeolocation();
+  const { position, loading: geoLoading, permissionDenied } = useGeolocation();
   const { shops: shopsFromDb, loading: shopsLoading, error: shopsError } = useShops();
   const exploreRef = useRef<HTMLDivElement>(null);
+  const [hasEntered, setHasEntered] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setHasEntered(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const shops: Shop[] = useMemo(() => shopsFromDb.map((s) =>
     shopToMap(s, position[0] || DEFAULT_CENTER[0], position[1] || DEFAULT_CENTER[1])
@@ -41,128 +46,146 @@ const Explore = () => {
       getDistance(position[0], position[1], a.lat, a.lng) -
       getDistance(position[0], position[1], b.lat, b.lng)
     );
-  }, [selectedCategory, searchQuery, shops]);
+  }, [selectedCategory, searchQuery, shops, position]);
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden flex flex-col">
-      {/* Animated Background Mesh */}
-      <div className="absolute inset-0 z-0">
-        <motion.div 
-          className="absolute -top-1/4 -left-1/4 w-[70%] h-[70%] rounded-full bg-orange-200/40 blur-[100px]"
-          animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div 
-          className="absolute -bottom-1/4 -right-1/4 w-[60%] h-[60%] rounded-full bg-orange-300/20 blur-[100px]"
-          animate={{ x: [0, -60, 0], y: [0, -40, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        />
-      </div>
+    <HeroAiEcommerce showHero={false}>
+      <div className="flex min-h-[85vh] overflow-hidden rounded-[40px] bg-card shadow-2xl border border-border mb-10">
+        {/* Sidebar - Filters */}
+        <aside className="hidden lg:flex w-80 border-r border-border bg-card p-8 flex-col shrink-0">
+          <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-[10px] font-black uppercase tracking-widest mb-8 group">
+            <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Home
+          </Link>
 
-      <div className="relative z-10 flex flex-col min-h-screen">
-        <Navbar />
-        <div className="flex-1 container py-14">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
-            <div>
-                <h1 className="text-6xl font-black font-display text-neutral-900 tracking-tight leading-none mb-4 uppercase italic">Browse Shops</h1>
-                <p className="text-xl text-neutral-500 font-medium max-w-lg">Discover curated local experiences around your location.</p>
+          <div className="flex items-center gap-3 mb-10">
+            <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center p-2 shadow-lg shadow-orange-500/30">
+              <LayoutGrid className="text-white w-5 h-5" />
             </div>
-            
-            <Link to="/map" className="group flex items-center gap-4 bg-orange-600 text-white rounded-2xl px-8 py-5 font-black uppercase tracking-widest text-xs shadow-2xl shadow-orange-500/30 hover:bg-orange-700 transition-all hover:scale-[1.05] active:scale-95">
-                <MapIcon className="h-5 w-5" />
-                <span>View Full Map Mode</span>
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            <span className="font-display font-black text-xl tracking-tight text-foreground uppercase italic">Filters</span>
+          </div>
+
+          <nav className="flex-1 space-y-8 overflow-y-auto pr-2 custom-scrollbar">
+            <div>
+              <div className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 px-1 mb-4">Search</div>
+              <div className="relative group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 group-focus-within:text-orange-600 transition-colors" />
+                <input
+                  type="text"
+                  placeholder="Shop name or keyword..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="w-full bg-muted border border-border rounded-2xl py-4 pl-12 pr-4 text-sm font-bold text-foreground focus:bg-card focus:ring-4 focus:ring-orange-600/5 transition-all outline-hidden"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 px-1 mb-4">Categories</div>
+              <div className="space-y-2">
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-xs font-black uppercase tracking-widest transition-all ${!selectedCategory
+                      ? "bg-orange-50 text-orange-600 shadow-sm"
+                      : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
+                    }`}
+                >
+                  All Categories
+                  {!selectedCategory && <div className="w-1.5 h-1.5 rounded-full bg-orange-600"></div>}
+                </button>
+                {CATEGORIES.map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
+                    className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-xs font-black uppercase tracking-widest transition-all ${selectedCategory === cat
+                        ? "bg-orange-50 text-orange-600 shadow-sm"
+                        : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
+                      }`}
+                  >
+                    {cat}
+                    {selectedCategory === cat && <div className="w-1.5 h-1.5 rounded-full bg-orange-600"></div>}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {permissionDenied && (
+              <div className="rounded-2xl border border-orange-100 bg-orange-50/50 p-6 text-[10px] font-black uppercase tracking-widest text-orange-600 leading-relaxed">
+                <AlertTriangle className="h-5 w-5 mb-3" />
+                Enable location services for distance sorting.
+              </div>
+            )}
+          </nav>
+
+          <div className="pt-8 mt-auto">
+            <Link to="/map" className="flex items-center justify-center gap-3 bg-foreground text-background rounded-2xl py-4 font-black uppercase tracking-widest text-[10px] shadow-xl hover:bg-orange-600 transition-all hover:scale-105 active:scale-95">
+              <MapIcon className="h-4 w-4" />
+              Full Map Mode
             </Link>
           </div>
+        </aside>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 items-start">
-             {/* Left Column - Controls & Filtering */}
-             <div className="space-y-10 lg:sticky lg:top-24">
-                <div className="relative group">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white rounded-xl shadow-sm transition-colors group-focus-within:bg-orange-100">
-                      <Search className="h-4 w-4 text-neutral-400 group-focus-within:text-orange-600" />
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Keyword search..."
-                      value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
-                      className="w-full bg-white/70 backdrop-blur-md border border-white/60 rounded-2xl py-5 pl-16 pr-4 text-sm font-bold text-neutral-900 focus:bg-white focus:ring-4 focus:ring-orange-600/5 transition-all shadow-xl shadow-orange-900/5"
-                    />
+        {/* Main Content */}
+        <main className="flex-1 flex flex-col bg-muted/30 overflow-hidden">
+          {/* Header */}
+          <header className="h-24 flex items-center justify-between px-10 bg-card border-b border-border shrink-0">
+            <div className="flex items-center gap-4">
+              <h2 className="font-display text-3xl font-black text-foreground tracking-tight flex items-baseline gap-3 uppercase italic">
+                Explore <span className="text-sm font-black text-muted-foreground not-italic tracking-[0.2em]">{filteredShops.length} Found</span>
+              </h2>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="lg:hidden">
+                <button className="p-3 bg-muted rounded-xl text-muted-foreground">
+                  <SlidersHorizontal className="h-5 w-5" />
+                </button>
+              </div>
+              <ThemeToggle />
+            </div>
+          </header>
+
+          {/* Results Grid */}
+          <div className="flex-1 overflow-y-auto p-10 custom-scrollbar">
+            <AnimatePresence mode="popLayout">
+              {shopsLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                  {[1, 2, 3, 4, 5, 6].map(i => <ShopCardSkeleton key={i} />)}
                 </div>
-
-                <div className="space-y-4">
-                   <h3 className="text-[10px] font-black text-neutral-400 tracking-[0.2em] uppercase px-1">Quick Filters</h3>
-                   <div className="flex flex-wrap gap-2">
-                        <button
-                          onClick={() => setSelectedCategory(null)}
-                          className={`rounded-xl border px-6 py-3 text-xs font-black uppercase tracking-widest transition-all ${
-                            !selectedCategory
-                              ? "border-orange-200 bg-orange-600 text-white shadow-lg shadow-orange-500/30"
-                              : "border-white/40 bg-white/60 text-neutral-500 hover:bg-white hover:border-orange-200"
-                          }`}
-                        >
-                          All
-                        </button>
-                        {CATEGORIES.map(cat => (
-                          <CategoryChip
-                            key={cat}
-                            category={cat}
-                            active={selectedCategory === cat}
-                            onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
-                          />
-                        ))}
-                   </div>
-                </div>
-
-                {permissionDenied && (
-                  <div className="flex items-center gap-4 rounded-3xl border border-orange-200 bg-white/60 backdrop-blur-sm p-6 text-sm font-bold text-orange-600 shadow-sm animate-pulse">
-                    <AlertTriangle className="h-6 w-6 shrink-0" />
-                    <span>Enable location services for the most accurate results in your area.</span>
+              ) : filteredShops.length === 0 ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center h-full py-20 text-center"
+                >
+                  <div className="w-24 h-24 bg-muted rounded-[32px] flex items-center justify-center mb-8 border-4 border-card shadow-sm">
+                    <MapPin className="h-10 w-10 text-muted-foreground" />
                   </div>
-                )}
-             </div>
-
-             {/* Right Column - Results Grid */}
-             <div className="space-y-8">
-                <div className="flex items-center gap-4 px-2">
-                    <h2 className="font-display text-4xl font-black text-neutral-900 tracking-tight leading-none uppercase italic">
-                      {filteredShops.length} Found
-                    </h2>
-                    <div className="h-px flex-1 bg-neutral-200 opacity-30"></div>
-                </div>
-
-                <div className="grid gap-6 sm:grid-cols-2">
-                  {(loading || shopsLoading) ? (
-                    <>
-                      {[1, 2, 4, 5, 6].map(i => <ShopCardSkeleton key={i} />)}
-                    </>
-                  ) : filteredShops.length === 0 ? (
-                    <div className="col-span-full flex flex-col items-center justify-center rounded-[48px] border-4 border-dashed border-white/20 bg-white/10 py-32 text-center">
-                      <MapPin className="mb-6 h-16 w-16 text-neutral-300" />
-                      <h3 className="font-display text-3xl font-black text-neutral-900 leading-none">NO LISTINGS</h3>
-                      <p className="text-lg text-neutral-500 font-medium mt-3">Try choosing a different perspective or category.</p>
-                      <button onClick={() => { setSelectedCategory(null); setSearchQuery(""); }} className="mt-8 text-orange-600 font-black uppercase tracking-widest text-xs underline underline-offset-8">Reset All Filters</button>
-                    </div>
-                  ) : (
-                    <>
-                      {filteredShops.map((shop, i) => (
-                        <ShopCard
-                          key={shop.id}
-                          shop={shop}
-                          distance={getDistance(position[0], position[1], shop.lat, shop.lng)}
-                          index={i}
-                        />
-                      ))}
-                    </>
-                  )}
-                </div>
-             </div>
+                  <h3 className="font-display text-4xl font-black text-foreground leading-none uppercase italic">No listings found</h3>
+                  <p className="text-lg text-neutral-500 font-medium mt-4 max-w-sm mx-auto">We couldn't find any shops matching your current selection.</p>
+                  <button
+                    onClick={() => { setSelectedCategory(null); setSearchQuery(""); }}
+                    className="mt-10 bg-orange-600 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-orange-500/20 hover:scale-110 transition-all font-display"
+                  >
+                    Clear all filters
+                  </button>
+                </motion.div>
+              ) : (
+                <TimelineAnimation animationNum={1} timelineRef={hasEntered ? { current: document.body } : exploreRef} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                  {filteredShops.map((shop, i) => (
+                    <ShopCard
+                      key={shop.id}
+                      shop={shop}
+                      distance={getDistance(position[0], position[1], shop.lat, shop.lng)}
+                      index={i}
+                    />
+                  ))}
+                </TimelineAnimation>
+              )}
+            </AnimatePresence>
           </div>
-        </div>
-        <Footer />
+        </main>
       </div>
-    </div>
+    </HeroAiEcommerce>
   );
 };
 
