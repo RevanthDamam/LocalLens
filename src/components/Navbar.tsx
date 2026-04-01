@@ -31,13 +31,11 @@ export function Navbar() {
     navigate("/");
   };
 
-  if (location.pathname !== "/") {
-    return null;
-  }
+
 
   return (
     <div 
-      className="absolute inset-x-0 top-0 z-[100] px-4 py-8 pointer-events-none"
+      className="fixed inset-x-0 top-0 z-[100] px-4 py-4 md:py-8 pointer-events-none"
     >
       <motion.nav
         initial={{ y: -50, opacity: 0 }}
@@ -129,9 +127,9 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setMobileOpen(!mobileOpen)} 
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/5 md:hidden active:scale-90 transition-transform"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 md:hidden active:scale-90 transition-transform pointer-events-auto"
           >
-            {mobileOpen ? <X className="h-4 w-4 text-foreground" /> : <Menu className="h-4 w-4 text-foreground" />}
+            {mobileOpen ? <X className="h-5 w-5 text-foreground" /> : <Menu className="h-5 w-5 text-foreground" />}
           </button>
         </div>
       </motion.nav>

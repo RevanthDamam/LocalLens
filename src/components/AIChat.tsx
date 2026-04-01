@@ -82,12 +82,12 @@ export function AIChat() {
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <motion.button
-            className="fixed bottom-6 right-6 z-[100] flex h-14 w-14 cursor-pointer items-center justify-center rounded-full border-2 border-primary/30 bg-primary text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring"
+            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[100] flex h-12 w-12 md:h-14 md:w-14 cursor-pointer items-center justify-center rounded-full border-2 border-primary/30 bg-primary text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring"
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Open AI assistant"
           >
-            <MessageCircle className="h-6 w-6" />
+            <MessageCircle className="h-5 w-5 md:h-6 md:w-6" />
           </motion.button>
         </SheetTrigger>
         <SheetContent side="right" className="flex w-full flex-col border-l bg-card sm:max-w-md">

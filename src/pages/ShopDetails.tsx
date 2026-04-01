@@ -51,21 +51,22 @@ const ShopDetails = () => {
 
    return (
       <HeroAiEcommerce showHero={false}>
-       <div ref={detailRef} className="rounded-[40px] bg-card shadow-2xl border border-border overflow-hidden mb-20 max-w-7xl mx-auto">
+        <div ref={detailRef} className="pt-24 md:pt-32 px-4 md:px-0">
+          <div className="rounded-3xl md:rounded-[40px] bg-card shadow-2xl border border-border overflow-hidden mb-10 md:mb-20 max-w-7xl mx-auto">
           {/* Cover Header Image - Clean Banner */}
-          <div className="relative h-[400px] w-full overflow-hidden">
-             <img src={mappedShop.image || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80"} className="h-full w-full object-cover" alt={mappedShop.name} />
-             <div className="absolute inset-0 bg-linear-to-t from-neutral-900/20 to-transparent"></div>
-             
-             <div className="absolute top-8 left-8 z-20">
-                <Link to="/explore" className="flex items-center gap-2 bg-white/40 backdrop-blur-md px-4 py-2 rounded-xl text-white text-xs font-black uppercase tracking-widest hover:bg-white/60 transition-all border border-white/20">
-                   <ArrowLeft className="h-4 w-4" /> Back to Explore
-                </Link>
-             </div>
-          </div>
+           <div className="relative h-[250px] md:h-[400px] w-full overflow-hidden">
+              <img src={mappedShop.image || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80"} className="h-full w-full object-cover" alt={mappedShop.name} />
+              <div className="absolute inset-0 bg-linear-to-t from-neutral-900/20 to-transparent"></div>
+              
+              <div className="absolute top-4 md:top-8 left-4 md:left-8 z-20">
+                 <Link to="/explore" className="flex items-center gap-2 bg-white/40 backdrop-blur-md px-3 md:px-4 py-2 rounded-xl text-white text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-white/60 transition-all border border-white/20">
+                    <ArrowLeft className="h-4 w-4" /> <span className="hidden sm:inline">Back to Explore</span><span className="sm:hidden">Back</span>
+                 </Link>
+              </div>
+           </div>
 
-          {/* Shop Header Details - Separated */}
-          <div className="px-12 pt-12 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-10 border-b border-border">
+           {/* Shop Header Details - Separated */}
+           <div className="px-6 md:px-12 pt-8 md:pt-12 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-10 border-b border-border">
              <div className="space-y-4">
                 <div className="flex items-center gap-3">
                    <span className="bg-orange-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.15em] text-white">{mappedShop.category}</span>
@@ -79,7 +80,7 @@ const ShopDetails = () => {
                    </div>
                 </div>
                 
-                <h1 className="font-display text-7xl font-black tracking-tighter leading-[0.9] text-foreground uppercase italic">{mappedShop.name}</h1>
+                 <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] md:leading-[0.9] text-foreground uppercase italic">{mappedShop.name}</h1>
                 
                 <div className="flex items-center gap-3 text-neutral-400 font-bold">
                    <div className="p-2 bg-orange-50 rounded-xl">
@@ -89,17 +90,17 @@ const ShopDetails = () => {
                 </div>
              </div>
 
-             <div className="flex flex-wrap gap-4 pb-2">
-                <button className="flex items-center gap-3 bg-neutral-900 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl hover:bg-orange-600 transition-all hover:scale-105">
-                   <MessageSquare className="h-4 w-4" /> Send Message
-                </button>
-                <button className="flex items-center gap-3 bg-white text-neutral-900 border-2 border-neutral-100 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg hover:border-orange-200 transition-all hover:scale-105">
-                   <MapIcon className="h-4 w-4" /> Locate on Map
-                </button>
-             </div>
-          </div>
+              <div className="flex flex-wrap gap-3 md:gap-4 pb-2">
+                 <button className="flex items-center gap-2 md:gap-3 bg-neutral-900 text-white px-6 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs shadow-xl hover:bg-orange-600 transition-all hover:scale-105">
+                    <MessageSquare className="h-3.5 w-3.5 md:h-4 md:w-4" /> Message
+                 </button>
+                 <button className="flex items-center gap-2 md:gap-3 bg-white text-neutral-900 border-2 border-neutral-100 px-6 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs shadow-lg hover:border-orange-200 transition-all hover:scale-105">
+                    <MapIcon className="h-3.5 w-3.5 md:h-4 md:w-4" /> Locate
+                 </button>
+              </div>
+           </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 p-12">
+             <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8 md:gap-12 p-6 md:p-12">
                <div className="space-y-12">
                   {/* About */}
                   <TimelineAnimation animationNum={1} timelineRef={hasEntered ? { current: document.body } : detailRef} className="space-y-4">
@@ -215,8 +216,9 @@ const ShopDetails = () => {
                </aside>
             </div>
          </div>
-      </HeroAiEcommerce>
-   );
+      </div>
+     </HeroAiEcommerce>
+  );
 };
 
 export default ShopDetails;

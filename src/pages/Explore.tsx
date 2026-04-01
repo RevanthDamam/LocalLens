@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HeroAiEcommerce } from "@/components/hero-ai-ecommerce";
 import { TimelineAnimation } from "@/components/timeline-animation";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import MotionDrawer from "@/components/motion-drawer";
 
 const Explore = () => {
   const [searchParams] = useSearchParams();
@@ -21,6 +22,7 @@ const Explore = () => {
   const { shops: shopsFromDb, loading: shopsLoading, error: shopsError } = useShops();
   const exploreRef = useRef<HTMLDivElement>(null);
   const [hasEntered, setHasEntered] = useState(false);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setHasEntered(true), 100);
@@ -48,95 +50,118 @@ const Explore = () => {
     );
   }, [selectedCategory, searchQuery, shops, position]);
 
+  const FiltersContent = () => (
+    <div className="flex flex-col h-full">
+      <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-[10px] font-black uppercase tracking-widest mb-8 group">
+        <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+        Back to Home
+      </Link>
+
+      <div className="flex items-center gap-3 mb-10">
+        <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center p-2 shadow-lg shadow-orange-500/30">
+          <LayoutGrid className="text-white w-5 h-5" />
+        </div>
+        <span className="font-display font-black text-xl tracking-tight text-foreground uppercase italic">Filters</span>
+      </div>
+
+      <nav className="flex-1 space-y-8 overflow-y-auto pr-2 custom-scrollbar">
+        <div>
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 px-1 mb-4">Search</div>
+          <div className="relative group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 group-focus-within:text-orange-600 transition-colors" />
+            <input
+              type="text"
+              placeholder="Shop name or keyword..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="w-full bg-muted border border-border rounded-2xl py-4 pl-12 pr-4 text-sm font-bold text-foreground focus:bg-card focus:ring-4 focus:ring-orange-600/5 transition-all outline-hidden"
+            />
+          </div>
+        </div>
+
+        <div>
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 px-1 mb-4">Categories</div>
+          <div className="space-y-2">
+            <button
+              onClick={() => { setSelectedCategory(null); setMobileFiltersOpen(false); }}
+              className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-xs font-black uppercase tracking-widest transition-all ${!selectedCategory
+                  ? "bg-orange-50 text-orange-600 shadow-sm"
+                  : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
+                }`}
+            >
+              All Categories
+              {!selectedCategory && <div className="w-1.5 h-1.5 rounded-full bg-orange-600"></div>}
+            </button>
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                onClick={() => { setSelectedCategory(selectedCategory === cat ? null : cat); setMobileFiltersOpen(false); }}
+                className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-xs font-black uppercase tracking-widest transition-all ${selectedCategory === cat
+                    ? "bg-orange-50 text-orange-600 shadow-sm"
+                    : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
+                  }`}
+              >
+                {cat}
+                {selectedCategory === cat && <div className="w-1.5 h-1.5 rounded-full bg-orange-600"></div>}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {permissionDenied && (
+          <div className="rounded-2xl border border-orange-100 bg-orange-50/50 p-6 text-[10px] font-black uppercase tracking-widest text-orange-600 leading-relaxed">
+            <AlertTriangle className="h-5 w-5 mb-3" />
+            Enable location services for distance sorting.
+          </div>
+        )}
+      </nav>
+
+      <div className="pt-8 mt-auto">
+        <Link to="/map" className="flex items-center justify-center gap-3 bg-foreground text-background rounded-2xl py-4 font-black uppercase tracking-widest text-[10px] shadow-xl hover:bg-orange-600 transition-all hover:scale-105 active:scale-95">
+          <MapIcon className="h-4 w-4" />
+          Full Map Mode
+        </Link>
+      </div>
+    </div>
+  );
+
   return (
     <HeroAiEcommerce showHero={false}>
-      <div className="flex min-h-[85vh] overflow-hidden rounded-[40px] bg-card shadow-2xl border border-border mb-10">
-        {/* Sidebar - Filters */}
-        <aside className="hidden lg:flex w-80 border-r border-border bg-card p-8 flex-col shrink-0">
-          <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-[10px] font-black uppercase tracking-widest mb-8 group">
-            <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Home
-          </Link>
-
-          <div className="flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center p-2 shadow-lg shadow-orange-500/30">
-              <LayoutGrid className="text-white w-5 h-5" />
-            </div>
-            <span className="font-display font-black text-xl tracking-tight text-foreground uppercase italic">Filters</span>
-          </div>
-
-          <nav className="flex-1 space-y-8 overflow-y-auto pr-2 custom-scrollbar">
-            <div>
-              <div className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 px-1 mb-4">Search</div>
-              <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 group-focus-within:text-orange-600 transition-colors" />
-                <input
-                  type="text"
-                  placeholder="Shop name or keyword..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className="w-full bg-muted border border-border rounded-2xl py-4 pl-12 pr-4 text-sm font-bold text-foreground focus:bg-card focus:ring-4 focus:ring-orange-600/5 transition-all outline-hidden"
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 px-1 mb-4">Categories</div>
-              <div className="space-y-2">
-                <button
-                  onClick={() => setSelectedCategory(null)}
-                  className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-xs font-black uppercase tracking-widest transition-all ${!selectedCategory
-                      ? "bg-orange-50 text-orange-600 shadow-sm"
-                      : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
-                    }`}
-                >
-                  All Categories
-                  {!selectedCategory && <div className="w-1.5 h-1.5 rounded-full bg-orange-600"></div>}
-                </button>
-                {CATEGORIES.map(cat => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
-                    className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-xs font-black uppercase tracking-widest transition-all ${selectedCategory === cat
-                        ? "bg-orange-50 text-orange-600 shadow-sm"
-                        : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
-                      }`}
-                  >
-                    {cat}
-                    {selectedCategory === cat && <div className="w-1.5 h-1.5 rounded-full bg-orange-600"></div>}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {permissionDenied && (
-              <div className="rounded-2xl border border-orange-100 bg-orange-50/50 p-6 text-[10px] font-black uppercase tracking-widest text-orange-600 leading-relaxed">
-                <AlertTriangle className="h-5 w-5 mb-3" />
-                Enable location services for distance sorting.
-              </div>
-            )}
-          </nav>
-
-          <div className="pt-8 mt-auto">
-            <Link to="/map" className="flex items-center justify-center gap-3 bg-foreground text-background rounded-2xl py-4 font-black uppercase tracking-widest text-[10px] shadow-xl hover:bg-orange-600 transition-all hover:scale-105 active:scale-95">
-              <MapIcon className="h-4 w-4" />
-              Full Map Mode
-            </Link>
-          </div>
-        </aside>
+      <div className="pt-24 md:pt-32 px-4 md:px-0">
+        <div className="flex min-h-[85vh] overflow-hidden rounded-3xl md:rounded-[40px] bg-card shadow-2xl border border-border mb-10">
+          {/* Sidebar - Filters (Desktop) */}
+          <aside className="hidden lg:flex w-80 border-r border-border bg-card p-8 flex-col shrink-0">
+            <FiltersContent />
+          </aside>
 
         {/* Main Content */}
         <main className="flex-1 flex flex-col bg-muted/30 overflow-hidden">
           {/* Header */}
-          <header className="h-24 flex items-center justify-between px-10 bg-card border-b border-border shrink-0">
+          <header className="h-20 md:h-24 flex items-center justify-between px-6 md:px-10 bg-card border-b border-border shrink-0">
             <div className="flex items-center gap-4">
-              <h2 className="font-display text-3xl font-black text-foreground tracking-tight flex items-baseline gap-3 uppercase italic">
-                Explore <span className="text-sm font-black text-muted-foreground not-italic tracking-[0.2em]">{filteredShops.length} Found</span>
+              <h2 className="font-display text-xl md:text-3xl font-black text-foreground tracking-tight flex items-baseline gap-3 uppercase italic">
+                Explore <span className="text-[10px] md:text-sm font-black text-muted-foreground not-italic tracking-[0.2em]">{filteredShops.length} <span className="hidden sm:inline">Found</span></span>
               </h2>
             </div>
             <div className="flex items-center gap-4">
               <div className="lg:hidden">
-                <button className="p-3 bg-muted rounded-xl text-muted-foreground">
+                <MotionDrawer
+                  direction="right"
+                  width={320}
+                  isOpen={mobileFiltersOpen}
+                  onToggle={setMobileFiltersOpen}
+                  showToggleButton={false}
+                  backgroundColor="hsl(var(--card))"
+                  clsBtnClassName="top-4 right-4"
+                >
+                  <div className="pt-4">
+                    <FiltersContent />
+                  </div>
+                </MotionDrawer>
+                <button 
+                  onClick={() => setMobileFiltersOpen(true)}
+                  className="p-3 bg-muted rounded-xl text-muted-foreground hover:text-orange-600 transition-colors"
+                >
                   <SlidersHorizontal className="h-5 w-5" />
                 </button>
               </div>
@@ -145,7 +170,7 @@ const Explore = () => {
           </header>
 
           {/* Results Grid */}
-          <div className="flex-1 overflow-y-auto p-10 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto p-5 md:p-10 custom-scrollbar">
             <AnimatePresence mode="popLayout">
               {shopsLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -184,6 +209,7 @@ const Explore = () => {
             </AnimatePresence>
           </div>
         </main>
+        </div>
       </div>
     </HeroAiEcommerce>
   );

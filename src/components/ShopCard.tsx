@@ -35,7 +35,7 @@ export function ShopCard({ shop, distance, index = 0 }: ShopCardProps) {
       <Link
         to={`/shop/${shop.id}`}
         style={clipFix}
-        className="flex flex-col h-full bg-card rounded-[40px] overflow-hidden border border-border shadow-[0_4px_20px_-10px_rgba(0,0,0,0.08)] group-hover:shadow-[0_20px_40px_-15px_rgba(249,115,22,0.18)] group-hover:border-orange-100 transition-all duration-500"
+        className="flex flex-col h-full bg-card rounded-[24px] sm:rounded-[32px] md:rounded-[40px] overflow-hidden border border-border shadow-[0_4px_20px_-10px_rgba(0,0,0,0.08)] group-hover:shadow-[0_20px_40px_-15px_rgba(249,115,22,0.18)] group-hover:border-orange-100 transition-all duration-500"
       >
         {/* Image Container */}
         <div className="relative aspect-[16/11] w-full overflow-hidden shrink-0 bg-muted">
@@ -67,9 +67,9 @@ export function ShopCard({ shop, distance, index = 0 }: ShopCardProps) {
         </div>
 
         {/* Content Area */}
-        <div className="flex flex-1 flex-col p-8">
-          <div className="mb-4">
-            <h3 className="font-display text-2xl font-black text-foreground leading-tight group-hover:text-orange-600 transition-colors uppercase italic tracking-tight underline-offset-4 decoration-orange-600/30 group-hover:underline">
+        <div className="flex flex-1 flex-col p-5 sm:p-6 md:p-8">
+          <div className="mb-3 md:mb-4">
+            <h3 className="font-display text-xl md:text-2xl font-black text-foreground leading-tight group-hover:text-orange-600 transition-colors uppercase italic tracking-tight underline-offset-4 decoration-orange-600/30 group-hover:underline">
               {shop.name}
             </h3>
             <div className="flex items-center gap-2 mt-2">
@@ -80,11 +80,11 @@ export function ShopCard({ shop, distance, index = 0 }: ShopCardProps) {
             </div>
           </div>
 
-          <p className="mb-8 line-clamp-2 text-sm font-medium text-neutral-500 leading-relaxed font-body italic">
+          <p className="mb-6 md:mb-8 line-clamp-2 text-xs md:text-sm font-medium text-neutral-500 leading-relaxed font-body italic">
             {shop.description || "Experience the best local flavors and atmosphere."}
           </p>
 
-          <div className="mt-auto space-y-5 pt-6 border-t border-neutral-50">
+          <div className="mt-auto space-y-4 md:space-y-5 pt-5 md:pt-6 border-t border-neutral-50">
             <div className="flex items-center justify-between">
                <div className="flex items-center gap-2.5 text-neutral-600">
                   <div className="p-2.5 bg-orange-50 rounded-xl group-hover:bg-orange-600 transition-colors duration-500">
