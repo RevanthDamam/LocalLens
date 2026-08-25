@@ -85,8 +85,10 @@ async function apiRequest<T>(path: string, options: RequestOptions = {}): Promis
   });
 
   if (response.status === 204) return undefined as T;
+  const contentType = response.headers.get("content-type") || "";
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) throw new ApiError(payload.error || "The request could not be completed", response.status);
+  if (!contentType.includes("application/json")) throw new ApiError("The LocalLens API is unavailable", 503);
   return payload as T;
 }
 
@@ -129,7 +131,7 @@ export const shopsApi = {
     if (filters?.search) params.set("search", filters.search);
     const query = params.size ? `?${params}` : "";
     const response = await apiRequest<{ shops: ApiShop[] }>(`/shops${query}`);
-    return response.shops;
+    return Array.isArray(response.shops) ? response.shops : [];
   },
   async get(shopId: string) {
     const response = await apiRequest<{ shop: ApiShop }>(`/shops/${shopId}`);
@@ -137,7 +139,7 @@ export const shopsApi = {
   },
   async items(shopId: string) {
     const response = await apiRequest<{ items: ApiShopItem[] }>(`/shops/${shopId}/items`);
-    return response.items;
+    return Array.isArray(response.items) ? response.items : [];
   },
   async create(payload: Pick<ApiShop, "name" | "category" | "address" | "description" | "image" | "latitude" | "longitude">) {
     const response = await apiRequest<{ shop: ApiShop }>("/shops", { method: "POST", body: payload });
