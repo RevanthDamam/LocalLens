@@ -1,4 +1,4 @@
-/** Cartographic Editorial: authenticated merchant identity sourced from the CornerStore API. */
+/** Cartographic Editorial: authenticated merchant identity sourced from the LocalLens API. */
 import { useCallback, useEffect, useState } from "react";
 import { authApi, getAuthToken, type ApiUser } from "@/lib/api";
 

@@ -5,6 +5,11 @@
 - [x] Rename the GitHub repository and all product-facing application branding to CornerStore.
 - [ ] Update Vercel-facing project labels and verify that the current production service remains live.
 
+## LocalLens restoration
+
+- [ ] Restore the GitHub repository name and product-facing application branding to LocalLens.
+- [ ] Validate the restored repository identity and production-site continuity.
+
 - [x] Inspect the connected Supabase project and use its supported database configuration for CornerStore.
 
 - [x] Configure the Node.js API to use Supabase Auth and the existing Supabase PostgreSQL-backed schema without storing a database password.

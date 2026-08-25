@@ -37,7 +37,7 @@ export function LoadingScreen({ show }: { show: boolean }) {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="font-display text-3xl font-bold text-foreground"
             >
-              CornerStore
+              LocalLens
             </motion.h1>
             <motion.div className="h-1.5 w-40 overflow-hidden rounded-full bg-muted">
               <motion.div

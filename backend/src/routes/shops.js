@@ -1,4 +1,4 @@
-/** CornerStore API: public discovery and owner-scoped shop operations use the existing Supabase PostgreSQL tables. */
+/** LocalLens API: public discovery and owner-scoped shop operations use the existing Supabase PostgreSQL tables. */
 import { Router } from "express";
 import { z } from "zod";
 import { createSupabaseClient, assertSupabase } from "../supabase/client.js";

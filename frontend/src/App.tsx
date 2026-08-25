@@ -1,4 +1,4 @@
-/** Cartographic Editorial: route shell preserves all CornerStore workflows while separating public and merchant contexts. */
+/** Cartographic Editorial: route shell preserves all LocalLens workflows while separating public and merchant contexts. */
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";

@@ -56,7 +56,7 @@ export default function Index() {
             <div>
               <p className="atlas-label text-primary">01 / Start nearby</p>
               <h2 className="mt-3 max-w-md font-display text-4xl leading-[0.95] tracking-[-0.04em]">A better way to decide where to go.</h2>
-              <p className="mt-5 max-w-md text-sm leading-6 text-muted-foreground">CornerStore keeps the most useful signals in the open: what a shop is, where it is, whether it is open, and how far it is from you.</p>
+              <p className="mt-5 max-w-md text-sm leading-6 text-muted-foreground">LocalLens keeps the most useful signals in the open: what a shop is, where it is, whether it is open, and how far it is from you.</p>
               <Link to="/categories" className="mt-7 inline-flex items-center gap-2 text-sm font-extrabold text-primary hover:text-foreground">Browse the full index <ChevronRight className="h-4 w-4" /></Link>
             </div>
             <div className="reveal-stagger grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

@@ -26,9 +26,9 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl">
       <nav className="mx-auto flex h-[70px] max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-10">
-        <Link to="/" className="flex items-center gap-3 text-foreground" aria-label="CornerStore home">
+        <Link to="/" className="flex items-center gap-3 text-foreground" aria-label="LocalLens home">
           <BrandMark className="h-9 w-9 rounded-xl" />
-          <span className="font-display text-[22px] leading-none tracking-[-0.04em]">CornerStore</span>
+          <span className="font-display text-[22px] leading-none tracking-[-0.04em]">LocalLens</span>
           <span className="hidden border-l border-border pl-3 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">Field guide</span>
         </Link>
 
