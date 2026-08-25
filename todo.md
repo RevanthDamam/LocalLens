@@ -1,5 +1,8 @@
 # LocalLens Redesign and Backend Migration
 
+- [ ] Inspect the connected Vercel deployment and make the current LocalLens frontend workspace live.
+- [ ] Verify the deployed site presents the redesigned LocalLens interface.
+
 - [ ] Verify the active frontend deployment source and fix the configuration so the redesigned interface is visible.
 
 - [x] Restructure the repository into explicit `frontend/` and `backend/` workspaces.
