@@ -2,7 +2,7 @@
 
 ## CornerStore rename
 
-- [ ] Rename the GitHub repository and all product-facing application branding to CornerStore.
+- [x] Rename the GitHub repository and all product-facing application branding to CornerStore.
 - [ ] Update Vercel-facing project labels and verify that the current production service remains live.
 
 - [x] Inspect the connected Supabase project and use its supported database configuration for CornerStore.
