@@ -1,5 +1,7 @@
 # LocalLens Redesign and Backend Migration
 
+- [ ] Verify the active frontend deployment source and fix the configuration so the redesigned interface is visible.
+
 - [x] Restructure the repository into explicit `frontend/` and `backend/` workspaces.
 - [x] Move the React, Vite, Tailwind, and frontend testing configuration into `frontend/`.
 - [x] Update root scripts, frontend API proxying, and documentation for the two-folder architecture.
