@@ -1,4 +1,4 @@
-/** LocalLens API: request-scoped Supabase clients keep JWTs on the server and apply existing PostgreSQL RLS policies. */
+/** CornerStore API: request-scoped Supabase clients keep JWTs on the server and apply existing PostgreSQL RLS policies. */
 import { createClient } from "@supabase/supabase-js";
 import { env } from "../config/env.js";
 

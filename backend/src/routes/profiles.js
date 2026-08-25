@@ -1,4 +1,4 @@
-/** LocalLens API: profile operations use the authenticated Supabase user and retain the merchant settings response shape. */
+/** CornerStore API: profile operations use the authenticated Supabase user and retain the merchant settings response shape. */
 import { Router } from "express";
 import { z } from "zod";
 import { assertSupabase } from "../supabase/client.js";

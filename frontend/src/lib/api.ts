@@ -88,7 +88,7 @@ async function apiRequest<T>(path: string, options: RequestOptions = {}): Promis
   const contentType = response.headers.get("content-type") || "";
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) throw new ApiError(payload.error || "The request could not be completed", response.status);
-  if (!contentType.includes("application/json")) throw new ApiError("The LocalLens API is unavailable", 503);
+  if (!contentType.includes("application/json")) throw new ApiError("The CornerStore API is unavailable", 503);
   return payload as T;
 }
 

@@ -1,4 +1,4 @@
-/** Cartographic Editorial: full map context for the same live discovery records used across LocalLens. */
+/** Cartographic Editorial: full map context for the same live discovery records used across CornerStore. */
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Compass, MapPin } from "lucide-react";
