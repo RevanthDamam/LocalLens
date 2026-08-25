@@ -6,31 +6,30 @@ LocalLens is a React field guide for local-business discovery, rebuilt with a **
 
 | Layer | Technology | Responsibility |
 | --- | --- | --- |
-| Web application | React, TypeScript, Vite, Tailwind CSS | Discovery, map exploration, merchant access, listing management, and offering management. |
-| API | Node.js, Express, Zod | Public shop reads, password-based merchant authentication, JWT authorization, profile updates, and owner-scoped CRUD. |
+| `frontend/` | React, TypeScript, Vite, Tailwind CSS | Discovery, map exploration, merchant access, listing management, and offering management. |
+| `backend/` | Node.js, Express, Zod | Public shop reads, password-based merchant authentication, JWT authorization, profile updates, and owner-scoped CRUD. |
 | Database | PostgreSQL, `pg` | Users, profiles, shops, and shop items, with foreign-key constraints and timestamps. |
 | Local bridge | Vite proxy | Routes browser requests from `/api` to the Node.js service on port `4000` during local development. |
 
 ## Local setup
 
-Install the frontend and backend dependencies separately, then create the backend environment file. The application intentionally keeps PostgreSQL credentials in `backend/.env`, which is excluded from version control.
+Install the frontend and backend dependencies from the repository root, then create the backend environment file. The application intentionally keeps PostgreSQL credentials in `backend/.env`, which is excluded from version control.
 
 ```sh
-npm install
-npm install --prefix backend
+npm run install:all
 cp backend/.env.example backend/.env
 ```
 
 Set `DATABASE_URL` and a long random `JWT_SECRET` in `backend/.env`. The PostgreSQL user must be able to create the schema objects described below. Apply the migration before starting either workflow that needs live data.
 
 ```sh
-npm run server:migrate
-npm run server
+npm run db:migrate
+npm run dev:backend
 # in another terminal
-npm run dev
+npm run dev:frontend
 ```
 
-The React application then runs on `http://localhost:8080` and forwards `/api/*` to `http://localhost:4000`.
+The React application in `frontend/` then runs on `http://localhost:8080` and forwards `/api/*` to the Node.js service in `backend/` on port `4000`. The root `npm run dev`, `npm run build`, and `npm run test` commands delegate to the frontend workspace for convenience.
 
 ## PostgreSQL schema
 
@@ -53,4 +52,4 @@ The frontend production build and Node.js syntax checks pass in the repository. 
 
 ## Repository notes
 
-The prior browser-direct Supabase integration remains in the repository only as unused historical source. The active React data hooks call `src/lib/api.ts`, which connects to the new Node.js API. The visual direction, data-contract mapping, and execution checklist are recorded in [`ideas.md`](ideas.md), [`docs/architecture.md`](docs/architecture.md), and [`todo.md`](todo.md).
+The prior browser-direct Supabase integration remains in the repository only as unused historical source under `frontend/src/integrations`. The active React data hooks call `frontend/src/lib/api.ts`, which connects to the new Node.js API. The visual direction, data-contract mapping, and execution checklist are recorded in [`ideas.md`](ideas.md), [`docs/architecture.md`](docs/architecture.md), and [`todo.md`](todo.md).

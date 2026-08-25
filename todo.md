@@ -1,5 +1,10 @@
 # LocalLens Redesign and Backend Migration
 
+- [x] Restructure the repository into explicit `frontend/` and `backend/` workspaces.
+- [x] Move the React, Vite, Tailwind, and frontend testing configuration into `frontend/`.
+- [x] Update root scripts, frontend API proxying, and documentation for the two-folder architecture.
+- [x] Validate the migrated workspaces and commit the restructuring update.
+
 - [x] Inventory the current React routes, Supabase queries, authentication behavior, and SQL schema.
 - [x] Define the Node.js API surface and PostgreSQL data model that preserve the present product flows.
 - [x] Add a `backend/` Node.js service with environment validation, database access, authentication, and local development scripts.
