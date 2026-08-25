@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    allowedHosts: true,
     hmr: {
       overlay: false,
     },
@@ -16,6 +17,10 @@ export default defineConfig(({ mode }) => ({
         target: "http://localhost:11434",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/ollama/, ""),
+      },
+      "/api": {
+        target: "http://localhost:4000",
+        changeOrigin: true,
       },
     },
   },

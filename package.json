@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "npm run dev --prefix backend",
+    "server:start": "npm run start --prefix backend",
+    "server:migrate": "npm run migrate --prefix backend",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",

@@ -1,5 +1,6 @@
+/** Cartographic Editorial: a compact business field card with real discovery metadata and decisive map-like hierarchy. */
 import { Link } from "react-router-dom";
-import { MapPin, Star, ArrowRight, ShoppingBag } from "lucide-react";
+import { ArrowUpRight, Compass, MapPin, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Shop } from "@/data/mockData";
 
@@ -9,107 +10,41 @@ interface ShopCardProps {
   index?: number;
 }
 
-export function ShopCard({ shop, distance, index = 0 }: ShopCardProps) {
-  // Using a more robust clipping fix for WebKit browsers
-  const clipFix = { 
-    maskImage: "-webkit-radial-gradient(white, black)",
-    isolation: "isolate" as const
-  };
+const fallbackImage = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=82";
 
+export function ShopCard({ shop, distance, index = 0 }: ShopCardProps) {
+  const rating = typeof shop.rating === "number" && shop.rating > 0 ? shop.rating.toFixed(1) : "Unrated";
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ 
-        delay: index * 0.05, 
-        duration: 0.6, 
-        ease: [0.22, 1, 0.36, 1] 
-      }}
-      whileHover={{ 
-        y: -10,
-        transition: { duration: 0.4, ease: [0.33, 1, 0.68, 1] }
-      }}
-      className="group relative h-full"
-    >
-      <Link
-        to={`/shop/${shop.id}`}
-        style={clipFix}
-        className="flex flex-col h-full bg-card rounded-[24px] sm:rounded-[32px] md:rounded-[40px] overflow-hidden border border-border shadow-[0_4px_20px_-10px_rgba(0,0,0,0.08)] group-hover:shadow-[0_20px_40px_-15px_rgba(249,115,22,0.18)] group-hover:border-orange-100 transition-all duration-500"
-      >
-        {/* Image Container */}
-        <div className="relative aspect-[16/11] w-full overflow-hidden shrink-0 bg-muted">
-          <motion.img
-            src={shop.image || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"}
-            alt={shop.name}
-            className="h-full w-full object-cover"
-            whileHover={{ scale: 1.1 }}
-            transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-            loading="lazy"
-          />
-          
-          {/* Rating Badge */}
-          <div className="absolute right-5 top-5 flex items-center gap-1.5 rounded-2xl bg-card/95 backdrop-blur-md px-3.5 py-1.5 text-xs font-black text-orange-600 shadow-lg border border-border">
-            <Star className="h-3.5 w-3.5 fill-orange-600" />
-            {shop.rating.toFixed(1)}
-          </div>
-          
-          {/* Status Badge */}
-          <div className="absolute left-5 bottom-5">
-             <span className={`rounded-xl px-4 py-1.5 text-[10px] font-black uppercase tracking-widest backdrop-blur-md shadow-lg ${
-                shop.isOpen
-                  ? "bg-emerald-500 text-white"
-                  : "bg-rose-500 text-white"
-              }`}>
-                {shop.isOpen ? "Open Now" : "Closed"}
-              </span>
+    <motion.article initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.04, 0.24), duration: 0.28 }} whileHover={{ y: -2 }} className="group h-full">
+      <Link to={`/shop/${shop.id}`} className="atlas-card flex h-full flex-col overflow-hidden transition-[box-shadow,border-color] duration-200 hover:border-primary/45 hover:shadow-[0_20px_45px_-26px_hsl(var(--foreground)/0.45)]">
+        <div className="relative aspect-[15/10] overflow-hidden bg-muted">
+          <img src={shop.image || fallbackImage} alt={shop.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.035]" loading="lazy" />
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/50 to-transparent" />
+          <div className="absolute inset-x-3 bottom-3 flex items-center justify-between text-white">
+            <span className="atlas-label border border-white/30 bg-black/30 px-2 py-1 backdrop-blur-sm">{shop.category}</span>
+            <span className={`atlas-label px-2 py-1 ${shop.isOpen ? "bg-primary text-primary-foreground" : "bg-black/60"}`}>{shop.isOpen ? "Open" : "Closed"}</span>
           </div>
         </div>
 
-        {/* Content Area */}
-        <div className="flex flex-1 flex-col p-5 sm:p-6 md:p-8">
-          <div className="mb-3 md:mb-4">
-            <h3 className="font-display text-xl md:text-2xl font-black text-foreground leading-tight group-hover:text-orange-600 transition-colors uppercase italic tracking-tight underline-offset-4 decoration-orange-600/30 group-hover:underline">
-              {shop.name}
-            </h3>
-            <div className="flex items-center gap-2 mt-2">
-               <div className="p-1 bg-muted rounded-md">
-                <ShoppingBag className="h-3 w-3 text-orange-600" />
-               </div>
-               <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">{shop.category}</span>
+        <div className="flex flex-1 flex-col p-5">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="atlas-label text-muted-foreground">Entry {String(index + 1).padStart(2, "0")}</p>
+              <h3 className="mt-1 font-display text-[25px] leading-[0.98] tracking-[-0.035em] text-foreground transition-colors group-hover:text-primary">{shop.name}</h3>
             </div>
+            <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
           </div>
 
-          <p className="mb-6 md:mb-8 line-clamp-2 text-xs md:text-sm font-medium text-neutral-500 leading-relaxed font-body italic">
-            {shop.description || "Experience the best local flavors and atmosphere."}
-          </p>
+          <p className="mt-3 line-clamp-2 text-sm leading-6 text-muted-foreground">{shop.description || "Details are being added by this local business."}</p>
 
-          <div className="mt-auto space-y-4 md:space-y-5 pt-5 md:pt-6 border-t border-neutral-50">
-            <div className="flex items-center justify-between">
-               <div className="flex items-center gap-2.5 text-neutral-600">
-                  <div className="p-2.5 bg-orange-50 rounded-xl group-hover:bg-orange-600 transition-colors duration-500">
-                    <MapPin className="h-4 w-4 text-orange-600 group-hover:text-white transition-colors duration-500" />
-                  </div>
-                  <span className="text-xs font-bold line-clamp-1 max-w-[150px]">{shop.address}</span>
-               </div>
-               {distance !== undefined && (
-                 <span className="text-neutral-400 font-black uppercase tracking-tighter text-[10px]">
-                   {distance.toFixed(1)} MI
-                 </span>
-               )}
-            </div>
-
-            <div className="flex items-center justify-between">
-               <div className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">
-                  PRICING: <span className="text-neutral-900 ml-1.5">{shop.priceLevel}</span>
-               </div>
-               <div className="flex items-center gap-2 text-orange-600 font-black uppercase tracking-widest text-[11px] group-hover:translate-x-1 transition-transform">
-                  View Menu <ArrowRight className="h-3.5 w-3.5" />
-               </div>
-            </div>
+          <div className="mt-auto grid grid-cols-[1fr_auto] gap-x-3 gap-y-3 border-t border-border pt-4">
+            <span className="flex min-w-0 items-center gap-2 text-xs font-semibold text-foreground"><MapPin className="h-3.5 w-3.5 shrink-0 text-primary" /><span className="truncate">{shop.address}</span></span>
+            <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground"><Compass className="h-3 w-3 text-primary" />{distance === undefined ? "—" : `${distance.toFixed(1)} mi`}</span>
+            <span className="flex items-center gap-1 text-xs font-semibold text-foreground"><Star className="h-3.5 w-3.5 fill-primary text-primary" />{rating}</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{shop.priceLevel || "$"}</span>
           </div>
         </div>
       </Link>
-    </motion.div>
+    </motion.article>
   );
 }

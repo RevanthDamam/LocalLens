@@ -1,206 +1,29 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { MapPin, ArrowLeft, Mail, Lock, User, Sparkles } from "lucide-react";
+/** Cartographic Editorial: merchant access is a focused, calm entry point to the LocalLens operations desk. */
+import { FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, ArrowUpRight, LockKeyhole, Mail, Store, UserRound } from "lucide-react";
 import { toast } from "sonner";
-import { motion, AnimatePresence } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { authApi } from "@/lib/api";
+import { BrandMark } from "@/components/BrandMark";
 
-const MerchantAuth = () => {
+export default function MerchantAuth() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
+  const submit = async (event: FormEvent) => {
+    event.preventDefault();
     try {
-      if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        toast.success("Welcome back!");
-        navigate("/merchant");
-      } else {
-        const { data: signUpData, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { data: { display_name: displayName } }
-        });
-        if (error) throw error;
-        if (signUpData.user) {
-          const { error: profileError } = await supabase.from("profiles").insert({
-            user_id: signUpData.user.id,
-            display_name: displayName || signUpData.user.email?.split("@")[0] || null,
-          });
-          if (profileError && profileError.code !== "23505") console.warn("Profile creation error:", profileError.message);
-        }
-        toast.success("Account created! Redirecting...");
-        navigate("/merchant");
-      }
-    } catch (err: any) {
-      toast.error(err.message);
-    } finally {
-      setLoading(false);
-    }
+      setLoading(true);
+      if (isLogin) await authApi.login({ email, password });
+      else await authApi.register({ email, password, display_name: displayName });
+      toast.success(isLogin ? "Welcome back" : "Merchant account created");
+      navigate("/merchant");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to continue");
+    } finally { setLoading(false); }
   };
-
-  return (
-    <div className="min-h-screen bg-white relative overflow-hidden flex flex-col">
-      {/* Animated Background Mesh */}
-      <div className="absolute inset-0 z-0 opacity-60">
-        <motion.div 
-          className="absolute -top-1/4 -right-1/4 w-[70%] h-[70%] rounded-full bg-orange-200/50 blur-[100px]"
-          animate={{ x: [0, -100, 0], y: [0, 50, 0] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div 
-          className="absolute -bottom-1/4 -left-1/4 w-[60%] h-[60%] rounded-full bg-orange-300/30 blur-[100px]"
-          animate={{ x: [0, 80, 0], y: [0, -60, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-        />
-      </div>
-
-      <div className="relative z-10 flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-1 container mx-auto flex items-center py-12 px-6 lg:px-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full max-w-7xl mx-auto">
-              {/* Left Side: Context */}
-              <div className="hidden lg:flex flex-col space-y-8">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={isLogin ? "login-text" : "signup-text"}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <div className="inline-flex h-20 w-20 items-center justify-center rounded-[32px] bg-orange-600 shadow-xl shadow-orange-500/20 mb-8">
-                       <MapPin className="h-10 w-10 text-white" />
-                    </div>
-                    <h1 className="text-6xl font-black font-display text-neutral-900 tracking-tight leading-[1.1] uppercase mb-6">
-                      {isLogin ? "Welcome\nBack" : "Welcome to\nLocably"}
-                    </h1>
-                    <p className="text-xl text-neutral-500 font-medium max-w-md leading-relaxed">
-                      {isLogin 
-                        ? "The neighborhood is waiting. Sign in to your dashboard to manage your shop's presence and track growth." 
-                        : "Join the network of premium independent shops. We help you reach local customers who value quality and craft."}
-                    </p>
-                    
-                    <div className="pt-10 flex items-center gap-6">
-                      <div className="flex -space-x-3">
-                        {[1, 2, 3, 4].map((i) => (
-                          <div key={i} className="h-12 w-12 rounded-full border-4 border-white bg-neutral-100 overflow-hidden shadow-sm">
-                            <img src={`https://i.pravatar.cc/150?u=${i + 10}`} alt="Merchant" className="h-full w-full object-cover grayscale opacity-80" />
-                          </div>
-                        ))}
-                      </div>
-                      <p className="text-sm font-bold text-neutral-400">
-                        Joined by <span className="text-orange-600">500+</span> local artisans
-                      </p>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Right Side: Auth Form */}
-              <div className="flex justify-center lg:justify-end">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="w-full max-w-md bg-white/70 backdrop-blur-3xl rounded-[40px] border border-white/60 shadow-2xl p-10 relative overflow-hidden"
-                >
-                  {/* Mobile Back Link & Header */}
-                  <div className="lg:hidden text-center mb-8">
-                     <h1 className="text-3xl font-black uppercase text-neutral-900 mb-2">
-                        {isLogin ? "Sign In" : "Register"}
-                     </h1>
-                     <p className="text-sm text-neutral-500">Locably Merchant Network</p>
-                  </div>
-
-                  {/* Back Link (Large Screen) */}
-                  <button
-                    onClick={() => navigate("/")}
-                    className="hidden lg:flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-neutral-400 hover:text-orange-600 transition-all mb-8 group"
-                  >
-                    <ArrowLeft className="h-3 w-3 group-hover:-translate-x-1 transition-transform" /> Back home
-                  </button>
-
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    {!isLogin && (
-                      <div>
-                        <label className="text-[9px] font-black text-neutral-400 uppercase tracking-widest mb-2 block px-1">Merchant Name</label>
-                        <div className="relative group">
-                           <User className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-300 group-focus-within:text-orange-500 transition-colors" />
-                           <input
-                            type="text"
-                            value={displayName}
-                            onChange={(e) => setDisplayName(e.target.value)}
-                            className="w-full bg-white/60 border-2 border-transparent rounded-xl py-4 pl-14 pr-5 text-sm font-bold text-neutral-900 focus:bg-white focus:border-orange-100 focus:ring-4 focus:ring-orange-600/5 transition-all shadow-sm"
-                            placeholder="Store Name"
-                            required
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    <div>
-                      <label className="text-[9px] font-black text-neutral-400 uppercase tracking-widest mb-2 block px-1">Email</label>
-                      <div className="relative group">
-                         <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-300 group-focus-within:text-orange-500 transition-colors" />
-                         <input
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="w-full bg-white/60 border-2 border-transparent rounded-xl py-4 pl-14 pr-5 text-sm font-bold text-neutral-900 focus:bg-white focus:border-orange-100 focus:ring-4 focus:ring-orange-600/5 transition-all shadow-sm"
-                          placeholder="you@email.com"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="text-[9px] font-black text-neutral-400 uppercase tracking-widest mb-2 block px-1">Password</label>
-                      <div className="relative group">
-                         <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-300 group-focus-within:text-orange-500 transition-colors" />
-                         <input
-                          type="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="w-full bg-white/60 border-2 border-transparent rounded-xl py-4 pl-14 pr-5 text-sm font-bold text-neutral-900 focus:bg-white focus:border-orange-100 focus:ring-4 focus:ring-orange-600/5 transition-all shadow-sm"
-                          placeholder="Min. 6 chars"
-                          minLength={6}
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-8 rounded-2xl shadow-xl shadow-orange-600/20 text-lg uppercase transition-all mt-4" disabled={loading}>
-                      {loading ? "Verifying..." : isLogin ? "Launch Dashboard" : "Create Account"}
-                    </Button>
-                  </form>
-
-                  <div className="mt-8 text-center">
-                    <p className="text-[11px] font-bold text-neutral-400">
-                      {isLogin ? "New merchant?" : "Already part of us?"}{" "}
-                      <button onClick={() => setIsLogin(!isLogin)} className="text-orange-600 hover:text-orange-700 transition-colors border-b border-orange-100 font-display">
-                        {isLogin ? "Apply for Access" : "Sign In Portal"}
-                      </button>
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </main>
-          <Footer />
-      </div>
-    </div>
-  );
-};
-
-export default MerchantAuth;
+  return <main className="relative grid min-h-screen overflow-hidden bg-[#102a31] text-white lg:grid-cols-[0.9fr_1.1fr]"><div className="absolute -left-24 top-24 h-[480px] w-[480px] rounded-full border border-[#72d2c7]/20" /><div className="absolute -left-7 top-40 h-[330px] w-[330px] rounded-full border border-white/10" /><section className="relative flex flex-col justify-between p-6 sm:p-10 lg:p-14"><div><Link to="/" className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.17em] text-white/55 hover:text-[#72d2c7]"><ArrowLeft className="h-3.5 w-3.5" />Back to the field guide</Link><div className="mt-16 max-w-lg"><BrandMark inverse className="h-12 w-12" /><p className="mt-8 atlas-label text-[#72d2c7]">Merchant workspace</p><h1 className="mt-4 font-display text-[clamp(3.5rem,6vw,6.5rem)] leading-[0.86] tracking-[-0.06em]">Keep your place current.</h1><p className="mt-6 max-w-md text-sm leading-7 text-white/65">Publish the details people need before they visit: your listing, exact location, and current offering list.</p></div></div><div className="hidden max-w-md border-t border-white/15 pt-6 text-xs leading-5 text-white/55 lg:block"><Store className="mb-3 h-5 w-5 text-[#72d2c7]" />LocalLens helps independent businesses occupy a clearer place in the neighborhood map.</div></section><section className="contour-surface flex items-center bg-background p-5 sm:p-10 lg:p-14"><div className="mx-auto w-full max-w-md"><div className="border border-border bg-card p-6 shadow-elevated sm:p-9"><p className="atlas-label text-primary">{isLogin ? "Returning merchant" : "New merchant"}</p><h2 className="mt-3 font-display text-4xl tracking-[-0.045em]">{isLogin ? "Open your desk." : "Claim your presence."}</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">{isLogin ? "Sign in to update the public face of your storefront." : "Start with the account that will own your shop listing."}</p><form onSubmit={submit} className="mt-8 space-y-5">{!isLogin && <label className="block"><span className="atlas-label text-muted-foreground">Merchant name</span><span className="mt-2 flex items-center gap-3 border border-border bg-background px-3 py-3 focus-within:border-primary"><UserRound className="h-4 w-4 text-primary" /><input required value={displayName} onChange={(event) => setDisplayName(event.target.value)} placeholder="Your public name" className="min-w-0 flex-1 bg-transparent text-sm font-semibold outline-none" /></span></label>}<label className="block"><span className="atlas-label text-muted-foreground">Email</span><span className="mt-2 flex items-center gap-3 border border-border bg-background px-3 py-3 focus-within:border-primary"><Mail className="h-4 w-4 text-primary" /><input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="name@business.com" className="min-w-0 flex-1 bg-transparent text-sm font-semibold outline-none" /></span></label><label className="block"><span className="atlas-label text-muted-foreground">Password</span><span className="mt-2 flex items-center gap-3 border border-border bg-background px-3 py-3 focus-within:border-primary"><LockKeyhole className="h-4 w-4 text-primary" /><input required type="password" minLength={6} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="At least 6 characters" className="min-w-0 flex-1 bg-transparent text-sm font-semibold outline-none" /></span></label><button disabled={loading} className="flex w-full items-center justify-between bg-secondary px-4 py-3.5 text-sm font-extrabold text-secondary-foreground transition hover:bg-primary disabled:opacity-60"><span>{loading ? "Working…" : isLogin ? "Open merchant desk" : "Create merchant account"}</span><ArrowUpRight className="h-4 w-4" /></button></form><div className="mt-6 border-t border-border pt-5 text-sm text-muted-foreground">{isLogin ? "New to LocalLens?" : "Already have access?"} <button onClick={() => setIsLogin((value) => !value)} type="button" className="font-extrabold text-primary hover:text-foreground">{isLogin ? "Create an account" : "Sign in"}</button></div></div></div></section></main>;
+}

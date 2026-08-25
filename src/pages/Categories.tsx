@@ -1,65 +1,8 @@
+/** Cartographic Editorial: a simple category index that preserves direct paths into filtered live discovery. */
 import { Link } from "react-router-dom";
+import { ArrowUpRight, Shapes } from "lucide-react";
+import { CATEGORIES } from "@/data/mockData";
 
-import { Footer } from "@/components/Footer";
-import { CATEGORIES, CATEGORY_ICONS } from "@/data/mockData";
-import { motion } from "framer-motion";
-
-const Categories = () => {
-  return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
-        {/* Animated Background Mesh */}
-        <div className="absolute inset-0 z-0 opacity-50">
-            <motion.div 
-                className="absolute -top-1/4 -left-1/4 w-[70%] h-[70%] rounded-full bg-orange-200/40 blur-[100px]"
-                animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
-                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            />
-            <motion.div 
-                className="absolute -bottom-1/4 -right-1/4 w-[60%] h-[60%] rounded-full bg-orange-300/20 blur-[100px]"
-                animate={{ x: [0, -60, 0], y: [0, -40, 0] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            />
-        </div>
-
-        <div className="relative z-10 flex flex-col min-h-screen pt-24 md:pt-32">
-            <div className="flex-1 container py-10 md:py-20 flex flex-col">
-                <div className="mb-10 md:mb-16 px-4 md:px-0">
-                    <h1 className="text-4xl md:text-6xl font-black font-display text-neutral-900 tracking-tight leading-none mb-4 uppercase">Direct Categories</h1>
-                    <p className="text-lg md:text-xl text-neutral-500 font-medium">Find exactly what you're looking for by browsing our curated shop sectors.</p>
-                </div>
-
-                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    {CATEGORIES.map((cat, i) => (
-                        <motion.div
-                            key={cat}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.05, duration: 0.5 }}
-                        >
-                            <Link
-                                onClick={() => window.scrollTo(0, 0)}
-                                to={`/explore?category=${cat}`}
-                                className="group relative block p-6 md:p-10 rounded-3xl md:rounded-[40px] bg-white border-2 border-transparent hover:border-orange-100 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 hover:-translate-y-3"
-                            >
-                                <div className="absolute top-10 right-10 text-9xl font-black text-neutral-100/30 group-hover:text-orange-100/50 transition-colors pointer-events-none select-none">
-                                    {String(i + 1).padStart(2, '0')}
-                                </div>
-                                <div className="relative z-10">
-                                    <div className="h-16 w-16 md:h-20 md:w-20 rounded-2xl md:rounded-3xl bg-orange-50 flex items-center justify-center text-4xl md:text-5xl mb-6 md:mb-8 group-hover:bg-white group-hover:scale-110 transition-all border border-transparent group-hover:border-orange-100 shadow-inner">
-                                        {CATEGORY_ICONS[cat]}
-                                    </div>
-                                    <h3 className="font-display text-2xl md:text-3xl font-black text-neutral-900 tracking-tight mb-2 uppercase italic">{cat}</h3>
-                                    <p className="text-[10px] md:text-xs font-black text-neutral-400 uppercase tracking-widest leading-relaxed">Explore local {cat.toLowerCase()} stores</p>
-                                </div>
-                            </Link>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-            <Footer />
-        </div>
-    </div>
-  );
-};
-
-export default Categories;
+export default function Categories() {
+  return <main className="contour-surface min-h-[calc(100vh-70px)] px-5 py-12 sm:px-8 lg:px-10 lg:py-16"><div className="mx-auto max-w-[1440px]"><p className="atlas-label text-primary">The index / all categories</p><div className="mt-4 flex flex-wrap items-end justify-between gap-6 border-b border-border pb-7"><div><h1 className="max-w-2xl font-display text-5xl leading-[0.9] tracking-[-0.05em] sm:text-6xl">Find a starting point.</h1><p className="mt-5 max-w-xl text-sm leading-6 text-muted-foreground">The LocalLens index groups the live shop register into simple, useful ways to explore a neighborhood.</p></div><Shapes className="h-11 w-11 text-primary/45" /></div><div className="mt-8 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">{CATEGORIES.map((category, index) => <Link key={category} to={`/explore?category=${category}`} className="group min-h-44 bg-card p-5 transition hover:bg-[#0e7c78] hover:text-white"><div className="flex justify-between"><span className="atlas-label text-muted-foreground group-hover:text-white/60">{String(index + 1).padStart(2, "0")}</span><ArrowUpRight className="h-4 w-4 text-primary transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" /></div><h2 className="mt-12 font-display text-3xl tracking-[-0.04em]">{category}</h2><p className="mt-2 text-xs font-bold text-muted-foreground group-hover:text-white/75">Open the category register</p></Link>)}</div></div></main>;
+}
