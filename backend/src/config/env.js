@@ -2,11 +2,10 @@ import "dotenv/config";
 import { z } from "zod";
 
 const environmentSchema = z.object({
-  DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
-  DATABASE_SSL: z.enum(["true", "false"]).default("false"),
-  JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
+  SUPABASE_URL: z.string().url("SUPABASE_URL must be a URL").default("https://skquddkyggertfdstdxm.supabase.co"),
+  SUPABASE_PUBLISHABLE_KEY: z.string().min(1, "SUPABASE_PUBLISHABLE_KEY is required").default("sb_publishable_1SmGuilIqHytt8hrwARaDA_e5NkRSXz"),
   PORT: z.coerce.number().int().positive().default(4000),
-  CORS_ORIGIN: z.string().default("http://localhost:8080"),
+  CORS_ORIGIN: z.string().default("https://local-lens-nu.vercel.app,http://localhost:8080"),
 });
 
 export const env = environmentSchema.parse(process.env);

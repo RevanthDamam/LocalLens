@@ -1,5 +1,19 @@
 # LocalLens Redesign and Backend Migration
 
+- [ ] Inspect the connected Supabase project and use its supported database configuration for LocalLens.
+
+- [ ] Store the supplied PostgreSQL and JWT credentials as production-only deployment secrets.
+- [ ] Run the PostgreSQL schema migration against the supplied Supabase database.
+- [ ] Deploy the Node.js API and connect the production frontend to it.
+
+- [ ] Map the supplied Supabase project endpoint to the backend’s PostgreSQL connection configuration.
+- [ ] Obtain the secure PostgreSQL connection string and JWT secret required for production backend access.
+
+- [ ] Inspect the production backend and PostgreSQL hosting state.
+- [ ] Configure the Node.js API with its PostgreSQL connection and production environment variables.
+- [ ] Point the deployed frontend at the production Node.js API.
+- [ ] Verify public listing reads and merchant API flows against the production database.
+
 - [x] Inspect the connected Vercel deployment and make the current LocalLens frontend workspace live.
 - [x] Verify the deployed site presents the redesigned LocalLens interface.
 

@@ -2,6 +2,11 @@
   "installCommand": "npm run install:all",
   "buildCommand": "npm run build",
   "outputDirectory": "frontend/dist",
+  "functions": {
+    "api/[...path].js": {
+      "runtime": "nodejs22.x"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",

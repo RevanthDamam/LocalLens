@@ -1,11 +1,6 @@
-import jwt from "jsonwebtoken";
-import { env } from "../config/env.js";
+import { createSupabaseClient } from "../supabase/client.js";
 
-export function createToken(userId) {
-  return jwt.sign({ sub: userId }, env.JWT_SECRET, { expiresIn: "7d" });
-}
-
-export function requireAuth(req, _res, next) {
+export async function requireAuth(req, _res, next) {
   const authorization = req.headers.authorization || "";
   const token = authorization.startsWith("Bearer ") ? authorization.slice(7) : null;
   if (!token) {
@@ -15,14 +10,15 @@ export function requireAuth(req, _res, next) {
     return next(error);
   }
 
-  try {
-    const payload = jwt.verify(token, env.JWT_SECRET);
-    req.auth = { userId: payload.sub };
-    return next();
-  } catch {
+  const client = createSupabaseClient(token);
+  const { data, error } = await client.auth.getUser(token);
+  if (error || !data.user) {
     const error = new Error("Your session is invalid or has expired");
     error.status = 401;
     error.expose = true;
     return next(error);
   }
+  req.auth = { userId: data.user.id, accessToken: token, user: data.user };
+  req.supabase = client;
+  return next();
 }
