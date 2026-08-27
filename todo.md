@@ -8,9 +8,9 @@
 
 ## Merchant center-pin refinement
 
-- [ ] Replace click-to-place selection with a fixed map-center marker controlled by panning and zooming.
-- [ ] Update location search and merchant instructions to fly the map to an area and save the centered coordinates.
-- [ ] Validate and deploy the refined merchant location-selection flow.
+- [x] Replace click-to-place selection with a fixed map-center marker controlled by panning and zooming.
+- [x] Update location search and merchant instructions to fly the map to an area and save the centered coordinates.
+- [x] Validate and deploy the refined merchant location-selection flow.
 
 ## CornerStores rename
 
