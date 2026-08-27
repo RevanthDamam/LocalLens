@@ -1,14 +1,14 @@
+/** Cartographic Editorial: a precise, click-to-place Leaflet marker for merchant storefront locations. */
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet";
 import { useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// Fix default marker icons for react-leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+const markerIcon = new L.DivIcon({
+  className: "",
+  html: "<div style='display:grid;place-items:center;width:30px;height:30px;background:#102a31;border:3px solid #72d2c7;border-radius:50% 50% 50% 5px;transform:rotate(-45deg);box-shadow:0 3px 12px rgba(16,42,49,.35)'><span style='display:block;width:7px;height:7px;border-radius:999px;background:#fff'></span></div>",
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
 });
 
 function LocationMarker({ position, setPosition }: { position: [number, number] | null, setPosition: (pos: [number, number]) => void }) {
@@ -19,7 +19,7 @@ function LocationMarker({ position, setPosition }: { position: [number, number] 
   });
 
   return position === null ? null : (
-    <Marker position={position} />
+    <Marker position={position} icon={markerIcon} />
   );
 }
 
@@ -33,12 +33,11 @@ function RecenterMap({ center }: { center: [number, number] | null }) {
   return null;
 }
 
-export function MapPinPicker({ position, onChange }: { position: [number, number] | null, onChange: (pos: [number, number]) => void }) {
-  // Use New York as default initial view if no location is selected
+export function MapPinPicker({ position, onChange, className = "" }: { position: [number, number] | null, onChange: (pos: [number, number]) => void, className?: string }) {
   const defaultCenter: [number, number] = [40.7128, -74.006];
 
   return (
-    <div className="h-[250px] w-full overflow-hidden rounded-xl border border-input shadow-sm z-0">
+    <div className={`relative z-0 h-[320px] w-full overflow-hidden border border-border ${className}`}>
       <MapContainer 
         center={position || defaultCenter} 
         zoom={14} 

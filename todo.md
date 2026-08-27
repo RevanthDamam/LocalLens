@@ -1,5 +1,11 @@
 # CornerStores Redesign and Backend Migration
 
+## Merchant location picker
+
+- [ ] Add an interactive map picker to the merchant shop-listing workflow.
+- [ ] Add address search that narrows the map to an address and saves selected coordinates and address text.
+- [ ] Validate listing updates through the existing Node API without changing the backend data model.
+
 ## CornerStores rename
 
 - [x] Rename the GitHub repository and product-facing application branding to CornerStores.

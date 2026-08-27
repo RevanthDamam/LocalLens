@@ -46,6 +46,12 @@ export interface ApiShopItem {
   is_popular: boolean | null;
 }
 
+export interface LocationSearchResult {
+  display_name: string;
+  latitude: number;
+  longitude: number;
+}
+
 type RequestOptions = Omit<RequestInit, "body"> & { body?: unknown };
 
 export class ApiError extends Error {
@@ -121,6 +127,14 @@ export const profileApi = {
     const response = await apiRequest<{ profile: ApiProfile; user: ApiUser }>("/profiles/me", { method: "PUT", body: payload });
     notifyAuthChanged();
     return response;
+  },
+};
+
+export const locationsApi = {
+  async search(query: string) {
+    const params = new URLSearchParams({ q: query });
+    const response = await apiRequest<{ results: LocationSearchResult[] }>(`/locations/search?${params}`);
+    return Array.isArray(response.results) ? response.results : [];
   },
 };
 

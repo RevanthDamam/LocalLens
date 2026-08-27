@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { env } from "./config/env.js";
 import authRoutes from "./routes/auth.js";
+import locationRoutes from "./routes/locations.js";
 import profileRoutes from "./routes/profiles.js";
 import shopRoutes from "./routes/shops.js";
 import { errorHandler, notFound } from "./lib/http.js";
@@ -14,6 +15,7 @@ app.use(cors({ origin: origins, methods: ["GET", "POST", "PUT", "PATCH", "DELETE
 app.use(express.json({ limit: "2mb" }));
 app.get("/api/health", (_req, res) => res.json({ status: "ok", database: "supabase-postgres" }));
 app.use("/api/auth", authRoutes);
+app.use("/api/locations", locationRoutes);
 app.use("/api/profiles", profileRoutes);
 app.use("/api/shops", shopRoutes);
 app.use(notFound);
