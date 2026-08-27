@@ -2,9 +2,9 @@
 
 ## Production cleanup and security
 
-- [ ] Identify and remove unused dependencies, legacy data access files, and redundant implementation without changing active flows.
-- [ ] Harden HTTP security headers, payload handling, validation, and error exposure for the deployed Node API.
-- [ ] Confirm frontend, API, database, merchant location search, and production routes retain their current behavior after cleanup.
+- [x] Identify and remove unused dependencies, legacy data access files, and redundant implementation without changing active flows.
+- [x] Harden HTTP security headers, payload handling, validation, and error exposure for the deployed Node API.
+- [x] Confirm frontend, API, database, merchant location search, and production routes retain their current behavior after cleanup.
 
 ## Merchant location picker
 
