@@ -3,7 +3,7 @@ import { FormEvent, KeyboardEvent, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowUpRight, Box, ChevronLeft, LayoutDashboard, ListPlus, LoaderCircle, LogOut, MapPin, Pencil, Plus, Save, Search, Settings2, Store, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
-import { CATEGORIES } from "@/data/mockData";
+import { CATEGORIES } from "@/data/catalog";
 import { BrandMark } from "@/components/BrandMark";
 import { MapPinPicker } from "@/components/MapPinPicker";
 import { useAuth } from "@/hooks/useAuth";

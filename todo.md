@@ -1,5 +1,12 @@
 # CornerStores Redesign and Backend Migration
 
+## Category and map expansion
+
+- [ ] Define the complete customer-facing category catalog with a unique icon and marker treatment for each category.
+- [ ] Use the shared category metadata in category navigation, shop cards, and map markers.
+- [ ] Add clearly labeled sample listings for every category without fabricated ratings, reviews, or customer claims.
+- [ ] Validate filtering and map behavior with live and sample listings.
+
 ## Production cleanup and security
 
 - [x] Identify and remove unused dependencies, legacy data access files, and redundant implementation without changing active flows.

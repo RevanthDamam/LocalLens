@@ -1,10 +1,10 @@
 /** Cartographic Editorial: a place-first landing page that turns live shop data into a concise local field guide. */
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Compass, Map, Search, Sparkles, Store, ChevronRight, Loader2 } from "lucide-react";
+import { ArrowUpRight, Compass, Map, Search, Sparkles, ChevronRight, Loader2 } from "lucide-react";
 import { useMemo } from "react";
 import { ShopCard } from "@/components/ShopCard";
 import { BrandMark } from "@/components/BrandMark";
-import { CATEGORIES, DEFAULT_CENTER, getDistance, type Shop } from "@/data/mockData";
+import { CATEGORY_CATALOG, DEFAULT_CENTER, getDistance, type Shop } from "@/data/catalog";
 import { shopToMap, useShops } from "@/hooks/useShops";
 
 const heroImage = "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=2000&q=88";
@@ -43,7 +43,7 @@ export default function Index() {
             </div>
             <div className="grid grid-cols-2 gap-px bg-white/10">
               <div className="bg-[#102a31]/80 p-4"><p className="font-display text-4xl">{loading ? "—" : shops.length}</p><p className="mt-1 font-mono text-[9px] uppercase tracking-[0.14em] text-white/55">Listed places</p></div>
-              <div className="bg-[#102a31]/80 p-4"><p className="font-display text-4xl">{CATEGORIES.length}</p><p className="mt-1 font-mono text-[9px] uppercase tracking-[0.14em] text-white/55">Categories</p></div>
+              <div className="bg-[#102a31]/80 p-4"><p className="font-display text-4xl">{CATEGORY_CATALOG.length}</p><p className="mt-1 font-mono text-[9px] uppercase tracking-[0.14em] text-white/55">Categories</p></div>
             </div>
             <div className="mt-4 flex items-center gap-3 text-xs text-white/70"><Compass className="h-4 w-4 text-[#7ed9ce]" />Distance-aware discovery when location is available.</div>
           </aside>
@@ -60,11 +60,11 @@ export default function Index() {
               <Link to="/categories" className="mt-7 inline-flex items-center gap-2 text-sm font-extrabold text-primary hover:text-foreground">Browse the full index <ChevronRight className="h-4 w-4" /></Link>
             </div>
             <div className="reveal-stagger grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {CATEGORIES.slice(0, 6).map((category, index) => (
-                <Link key={category} to={`/explore?category=${category}`} className="group relative min-h-32 border border-border bg-card p-4 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg">
+              {CATEGORY_CATALOG.map(({ name, Icon, color, tint }, index) => (
+                <Link key={name} to={`/explore?category=${encodeURIComponent(name)}`} className="group relative min-h-32 border border-border bg-card p-4 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg">
                   <span className="atlas-label text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
-                  <Store className="absolute right-4 top-4 h-4 w-4 text-primary/60" />
-                  <p className="mt-9 font-display text-2xl tracking-[-0.035em] group-hover:text-primary">{category}</p>
+                  <span className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full" style={{ color, backgroundColor: tint }}><Icon className="h-4 w-4" /></span>
+                  <p className="mt-9 font-display text-2xl tracking-[-0.035em] group-hover:text-primary">{name}</p>
                   <span className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-muted-foreground">Explore <ArrowUpRight className="h-3 w-3" /></span>
                 </Link>
               ))}

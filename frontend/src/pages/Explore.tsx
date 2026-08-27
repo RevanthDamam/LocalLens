@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { AlertTriangle, ArrowUpRight, Compass, Map, MapPin, Search, SlidersHorizontal, X } from "lucide-react";
 import { ShopCard } from "@/components/ShopCard";
-import { CATEGORIES, DEFAULT_CENTER, getDistance, type Category, type Shop } from "@/data/mockData";
+import { CATEGORY_CATALOG, DEFAULT_CENTER, getDistance, type Category, type Shop } from "@/data/catalog";
 import { shopToMap, useShops } from "@/hooks/useShops";
 import { useGeolocation } from "@/hooks/useGeolocation";
 
@@ -41,7 +41,7 @@ export default function Explore() {
         <div className="flex items-center justify-between"><p className="atlas-label text-white/50">Category</p>{category && <button onClick={() => setCategory(null)} className="text-[11px] font-bold text-[#72d2c7]">Clear</button>}</div>
         <div className="mt-3 grid gap-1">
           <button onClick={() => setCategory(null)} className={`flex items-center justify-between px-3 py-2.5 text-left text-xs font-bold transition ${!category ? "bg-[#72d2c7] text-[#102a31]" : "text-white/65 hover:bg-white/10 hover:text-white"}`}><span>All places</span><span className="font-mono text-[10px]">{shops.length}</span></button>
-          {CATEGORIES.map((item) => <button key={item} onClick={() => setCategory(category === item ? null : item)} className={`flex items-center justify-between px-3 py-2.5 text-left text-xs font-bold transition ${category === item ? "bg-[#72d2c7] text-[#102a31]" : "text-white/65 hover:bg-white/10 hover:text-white"}`}><span>{item}</span><span className="h-1.5 w-1.5 rounded-full bg-current opacity-60" /></button>)}
+          {CATEGORY_CATALOG.map(({ name, Icon, color }) => <button key={name} onClick={() => setCategory(category === name ? null : name)} className={`flex items-center justify-between px-3 py-2.5 text-left text-xs font-bold transition ${category === name ? "bg-[#72d2c7] text-[#102a31]" : "text-white/65 hover:bg-white/10 hover:text-white"}`}><span className="flex items-center gap-2"><Icon className="h-3.5 w-3.5" style={{ color: category === name ? "#102a31" : color }} />{name}</span><span className="h-1.5 w-1.5 rounded-full bg-current opacity-60" /></button>)}
         </div>
       </div>
       <div className="mt-auto border-t border-white/10 pt-5">

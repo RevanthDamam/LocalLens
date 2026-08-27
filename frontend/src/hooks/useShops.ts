@@ -1,10 +1,15 @@
 /** Cartographic Editorial: public discovery reads from the Node.js/PostgreSQL API. */
 import { useCallback, useEffect, useState } from "react";
-import type { Category } from "@/data/mockData";
+import { DEFAULT_CENTER, isSampleShopId, SAMPLE_SHOPS, type Shop } from "@/data/catalog";
 import { shopsApi, type ApiShop, type ApiShopItem } from "@/lib/api";
 
 export type ShopRecord = ApiShop;
 export type ShopItemRecord = ApiShopItem;
+
+function withSamples(liveShops: ApiShop[]) {
+  const ids = new Set(liveShops.map((shop) => shop.id));
+  return [...liveShops, ...SAMPLE_SHOPS.filter((shop) => !ids.has(shop.id))];
+}
 
 export function useShops() {
   const [shops, setShops] = useState<ShopRecord[]>([]);
@@ -15,7 +20,7 @@ export function useShops() {
     try {
       setLoading(true);
       setError(null);
-      setShops(await shopsApi.list());
+      setShops(withSamples(await shopsApi.list()));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load shops");
       setShops([]);
@@ -36,7 +41,7 @@ export function useShopItems(shopId: string | null) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!shopId) {
+    if (!shopId || isSampleShopId(shopId)) {
       setItems([]);
       setLoading(false);
       return;
@@ -53,24 +58,23 @@ export function useShopItems(shopId: string | null) {
   return { items, loading };
 }
 
-export function shopToMap(shop: ShopRecord, defaultLat: number, defaultLng: number) {
+export function shopToMap(shop: ShopRecord, defaultLat = DEFAULT_CENTER[0], defaultLng = DEFAULT_CENTER[1]): Shop {
   return {
     id: shop.id,
     name: shop.name,
-    category: (shop.category || "Cafe") as Category,
+    category: shop.category || "Cafe",
     lat: shop.latitude ?? defaultLat,
     lng: shop.longitude ?? defaultLng,
     image: shop.image || "",
     description: shop.description || "",
     address: shop.address,
     rating: shop.rating ?? 0,
-    reviewCount: 0,
-    priceLevel: shop.price_level || "$",
-    waitTime: "—",
+    priceLevel: shop.price_level,
     phone: shop.phone || "",
     website: "",
     hours: { weekday: "See storefront", saturday: "See storefront", sunday: "See storefront" },
-    isOpen: shop.is_open ?? true,
+    isOpen: shop.is_open,
+    isSample: isSampleShopId(shop.id),
     merchantId: shop.owner_id,
   };
 }

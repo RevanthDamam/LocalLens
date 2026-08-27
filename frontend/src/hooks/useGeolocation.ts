@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { DEFAULT_CENTER } from "@/data/mockData";
+import { DEFAULT_CENTER } from "@/data/catalog";
 
 interface GeolocationState {
   position: [number, number];
