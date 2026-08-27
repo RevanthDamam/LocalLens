@@ -14,9 +14,9 @@
 
 ## Merchant structured location search
 
-- [ ] Prevent location search from submitting or resetting the parent shop-listing form.
-- [ ] Add country, state or region, city, and area inputs above the map for structured area search.
-- [ ] Recenter the fixed-pin map from the structured search and validate the preserved listing state.
+- [x] Prevent location search from submitting or resetting the parent shop-listing form.
+- [x] Add country, state or region, city, and area inputs above the map for structured area search.
+- [x] Recenter the fixed-pin map from the structured search and validate the preserved listing state.
 
 ## CornerStores rename
 
