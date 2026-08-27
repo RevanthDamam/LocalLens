@@ -1,5 +1,11 @@
 # CornerStores Redesign and Backend Migration
 
+## Reference-aligned map refinement
+
+- [ ] Render the same Lucide category icons in map pins as in the left category filter rail.
+- [ ] Adjust the public map workspace proportions, map canvas, controls, and rail to match the provided reference.
+- [ ] Validate the refined map layout and category icon consistency in production.
+
 ## Category and map expansion
 
 - [x] Define the complete customer-facing category catalog with a unique icon and marker treatment for each category.

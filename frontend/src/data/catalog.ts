@@ -6,25 +6,25 @@ import type { ApiShop } from "@/lib/api";
 export const DEFAULT_CENTER: [number, number] = [40.7128, -74.006];
 
 export const CATEGORY_CATALOG = [
-  { name: "Bakery", Icon: Croissant, markerGlyph: "◒", color: "#c8633f", tint: "#fff1e9" },
-  { name: "Grocery", Icon: ShoppingBasket, markerGlyph: "▦", color: "#3f785d", tint: "#eaf7ef" },
-  { name: "Cafe", Icon: Coffee, markerGlyph: "◉", color: "#815838", tint: "#f8efe7" },
-  { name: "Florist", Icon: Flower2, markerGlyph: "✦", color: "#b45477", tint: "#fff0f5" },
-  { name: "Artisan", Icon: Hammer, markerGlyph: "⚒", color: "#6a6297", tint: "#f1efff" },
-  { name: "Restaurant", Icon: UtensilsCrossed, markerGlyph: "✣", color: "#a54a36", tint: "#fff0ec" },
-  { name: "Electronics", Icon: Smartphone, markerGlyph: "▯", color: "#3574a8", tint: "#eaf4ff" },
-  { name: "Pharmacy", Icon: Pill, markerGlyph: "✚", color: "#2d7e81", tint: "#e9f8f8" },
-  { name: "Fashion", Icon: Shirt, markerGlyph: "◇", color: "#9a5475", tint: "#fff0f7" },
-  { name: "Books & Stationery", Icon: BookOpen, markerGlyph: "▤", color: "#597b43", tint: "#f0f8e9" },
-  { name: "Home & Living", Icon: Armchair, markerGlyph: "⌂", color: "#9a7142", tint: "#fff6e9" },
-  { name: "Health & Beauty", Icon: HeartPulse, markerGlyph: "♡", color: "#b84962", tint: "#fff0f2" },
-  { name: "Pet Supplies", Icon: PawPrint, markerGlyph: "◌", color: "#71593f", tint: "#f8f2ea" },
+  { name: "Bakery", Icon: Croissant, color: "#c8633f", tint: "#fff1e9" },
+  { name: "Grocery", Icon: ShoppingBasket, color: "#3f785d", tint: "#eaf7ef" },
+  { name: "Cafe", Icon: Coffee, color: "#815838", tint: "#f8efe7" },
+  { name: "Florist", Icon: Flower2, color: "#b45477", tint: "#fff0f5" },
+  { name: "Artisan", Icon: Hammer, color: "#6a6297", tint: "#f1efff" },
+  { name: "Restaurant", Icon: UtensilsCrossed, color: "#a54a36", tint: "#fff0ec" },
+  { name: "Electronics", Icon: Smartphone, color: "#3574a8", tint: "#eaf4ff" },
+  { name: "Pharmacy", Icon: Pill, color: "#2d7e81", tint: "#e9f8f8" },
+  { name: "Fashion", Icon: Shirt, color: "#9a5475", tint: "#fff0f7" },
+  { name: "Books & Stationery", Icon: BookOpen, color: "#597b43", tint: "#f0f8e9" },
+  { name: "Home & Living", Icon: Armchair, color: "#9a7142", tint: "#fff6e9" },
+  { name: "Health & Beauty", Icon: HeartPulse, color: "#b84962", tint: "#fff0f2" },
+  { name: "Pet Supplies", Icon: PawPrint, color: "#71593f", tint: "#f8f2ea" },
 ] as const;
 
 export type Category = (typeof CATEGORY_CATALOG)[number]["name"];
-export type CategoryMeta = { name: Category; Icon: LucideIcon; markerGlyph: string; color: string; tint: string };
+export type CategoryMeta = { name: Category; Icon: LucideIcon; color: string; tint: string };
 export const CATEGORIES = CATEGORY_CATALOG.map((category) => category.name) as Category[];
-const fallbackCategory: CategoryMeta = { name: "Other" as Category, Icon: Store, markerGlyph: "•", color: "#49646c", tint: "#edf3f3" };
+const fallbackCategory: CategoryMeta = { name: "Other" as Category, Icon: Store, color: "#49646c", tint: "#edf3f3" };
 
 export function getCategoryMeta(category: string): CategoryMeta {
   return CATEGORY_CATALOG.find((entry) => entry.name === category) || fallbackCategory;

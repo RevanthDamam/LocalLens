@@ -95,6 +95,28 @@
 }
 
 @layer components {
+  /* Cartographic Editorial: a softened, paper-map treatment with compact reference-style Leaflet controls. */
+  .leaflet-tile-pane {
+    filter: saturate(0.78) contrast(0.94) sepia(0.08);
+  }
+
+  .leaflet-control-zoom {
+    border: 1px solid hsl(var(--border)) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 8px 18px rgb(16 42 49 / 12%) !important;
+  }
+
+  .leaflet-control-zoom a {
+    color: hsl(var(--foreground)) !important;
+    border-bottom-color: hsl(var(--border)) !important;
+  }
+
+  .category-map-pin,
+  .category-map-pin__icon {
+    background: transparent !important;
+    border: 0 !important;
+  }
+
   .font-display { font-family: var(--font-display); }
   .font-body { font-family: var(--font-body); }
   .font-mono { font-family: var(--font-mono); }
