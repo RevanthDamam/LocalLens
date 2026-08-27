@@ -1,33 +1,28 @@
-/** Cartographic Editorial: a precise, click-to-place Leaflet marker for merchant storefront locations. */
-import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet";
+/** Cartographic Editorial: a fixed center pin lets merchants choose storefront coordinates by moving the map beneath it. */
+import { MapContainer, TileLayer, useMapEvents, useMap } from "react-leaflet";
 import { useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-const markerIcon = new L.DivIcon({
-  className: "",
-  html: "<div style='display:grid;place-items:center;width:30px;height:30px;background:#102a31;border:3px solid #72d2c7;border-radius:50% 50% 50% 5px;transform:rotate(-45deg);box-shadow:0 3px 12px rgba(16,42,49,.35)'><span style='display:block;width:7px;height:7px;border-radius:999px;background:#fff'></span></div>",
-  iconSize: [30, 30],
-  iconAnchor: [15, 30],
-});
-
-function LocationMarker({ position, setPosition }: { position: [number, number] | null, setPosition: (pos: [number, number]) => void }) {
-  useMapEvents({
-    click(e) {
-      setPosition([e.latlng.lat, e.latlng.lng]);
+function CenterCoordinates({ onChange }: { onChange: (position: [number, number]) => void }) {
+  const map = useMapEvents({
+    moveend() {
+      const center = map.getCenter();
+      onChange([center.lat, center.lng]);
     },
   });
-
-  return position === null ? null : (
-    <Marker position={position} icon={markerIcon} />
-  );
+  return null;
 }
 
 function RecenterMap({ center }: { center: [number, number] | null }) {
   const map = useMap();
   useEffect(() => {
     if (center) {
-      map.setView(center, map.getZoom(), { animate: true });
+      const currentCenter = map.getCenter();
+      const nextCenter = L.latLng(center[0], center[1]);
+      if (currentCenter.distanceTo(nextCenter) > 3) {
+        map.flyTo(nextCenter, Math.max(map.getZoom(), 15), { animate: true, duration: 0.7 });
+      }
     }
   }, [center, map]);
   return null;
@@ -49,8 +44,16 @@ export function MapPinPicker({ position, onChange, className = "" }: { position:
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <RecenterMap center={position} />
-        <LocationMarker position={position} setPosition={onChange} />
+        <CenterCoordinates onChange={onChange} />
       </MapContainer>
+      <div className="pointer-events-none absolute inset-0 z-[500]" aria-hidden="true">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full drop-shadow-[0_3px_10px_rgba(16,42,49,0.4)]">
+          <div className="grid h-8 w-8 place-items-center rounded-[50%_50%_50%_5px] border-[3px] border-[#72d2c7] bg-[#102a31] -rotate-45">
+            <span className="h-2 w-2 rounded-full bg-white rotate-45" />
+          </div>
+        </div>
+        <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#102a31]/35" />
+      </div>
     </div>
   );
 }

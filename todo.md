@@ -6,6 +6,12 @@
 - [x] Add address search that narrows the map to an address and saves selected coordinates and address text.
 - [x] Validate the frontend build and deployed, protected address-search route while preserving the existing shop coordinate payload.
 
+## Merchant center-pin refinement
+
+- [ ] Replace click-to-place selection with a fixed map-center marker controlled by panning and zooming.
+- [ ] Update location search and merchant instructions to fly the map to an area and save the centered coordinates.
+- [ ] Validate and deploy the refined merchant location-selection flow.
+
 ## CornerStores rename
 
 - [x] Rename the GitHub repository and product-facing application branding to CornerStores.
