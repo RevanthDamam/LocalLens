@@ -2,9 +2,9 @@
 
 ## Reference-aligned map refinement
 
-- [ ] Render the same Lucide category icons in map pins as in the left category filter rail.
-- [ ] Adjust the public map workspace proportions, map canvas, controls, and rail to match the provided reference.
-- [ ] Validate the refined map layout and category icon consistency in production.
+- [x] Render the same Lucide category icons in map pins as in the left category filter rail.
+- [x] Adjust the public map workspace proportions, map canvas, controls, and rail to match the provided reference.
+- [x] Validate the refined map layout and category icon consistency in production.
 
 ## Category and map expansion
 
