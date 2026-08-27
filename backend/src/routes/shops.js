@@ -10,8 +10,10 @@ const optionalText = z.string().trim().max(5000).nullable().optional();
 const shopCreateSchema = z.object({ name: z.string().trim().min(1).max(160), category: z.string().trim().min(1).max(120), address: z.string().trim().min(1).max(500), description: optionalText, image: z.string().url().max(2048).nullable().optional(), latitude: z.coerce.number().gte(-90).lte(90).nullable().optional(), longitude: z.coerce.number().gte(-180).lte(180).nullable().optional() });
 const shopUpdateSchema = shopCreateSchema.partial().extend({ rating: z.coerce.number().min(0).max(5).nullable().optional(), price_level: z.string().trim().max(8).nullable().optional(), is_open: z.boolean().nullable().optional(), phone: z.string().trim().max(80).nullable().optional() });
 const itemSchema = z.object({ name: z.string().trim().min(1).max(180), description: optionalText, price: z.coerce.number().min(0).max(1000000), image: z.string().url().max(2048).nullable().optional(), is_popular: z.boolean().optional() });
+const publicQuerySchema = z.object({ category: z.string().trim().max(120).optional(), search: z.string().trim().max(100).optional() });
 
 function clean(values, allowed) { return Object.fromEntries(Object.entries(values).filter(([key, value]) => allowed.includes(key) && value !== undefined)); }
+function safeFilter(value) { return value.replace(/[^\p{L}\p{N}\s&'’-]/gu, "").trim(); }
 async function ownedShop(client, shopId, userId) {
   const shop = assertSupabase(await client.from("shops").select("*").eq("id", shopId).eq("owner_id", userId).maybeSingle());
   if (!shop) throw badRequest("That shop was not found or you do not have access to it");
@@ -19,11 +21,11 @@ async function ownedShop(client, shopId, userId) {
 }
 
 router.get("/", asyncHandler(async (req, res) => {
-  const category = typeof req.query.category === "string" ? req.query.category.trim() : "";
-  const search = typeof req.query.search === "string" ? req.query.search.trim() : "";
+  const { category = "", search = "" } = publicQuerySchema.parse(req.query);
+  const safeSearch = safeFilter(search);
   let request = createSupabaseClient().from("shops").select("*").order("created_at", { ascending: false });
   if (category) request = request.eq("category", category);
-  if (search) request = request.or(`name.ilike.%${search}%,category.ilike.%${search}%,address.ilike.%${search}%`);
+  if (safeSearch) request = request.or(`name.ilike.%${safeSearch}%,category.ilike.%${safeSearch}%,address.ilike.%${safeSearch}%`);
   res.json({ shops: assertSupabase(await request) || [] });
 }));
 

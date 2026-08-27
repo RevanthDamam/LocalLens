@@ -11,8 +11,11 @@ export function createSupabaseClient(accessToken) {
 
 export function assertSupabase(result) {
   if (!result.error) return result.data;
-  const error = new Error(result.error.message || "The database request could not be completed");
-  error.status = result.error.code === "PGRST116" ? 404 : 400;
+  const statusByCode = { PGRST116: 404, PGRST301: 401, "23505": 409, "42501": 403 };
+  const status = statusByCode[result.error.code] || 400;
+  const message = status === 404 ? "The requested record was not found" : status === 401 ? "Your session is invalid or has expired" : status === 403 ? "You do not have access to that record" : status === 409 ? "A record with that value already exists" : "The database request could not be completed";
+  const error = new Error(message);
+  error.status = status;
   error.expose = true;
   throw error;
 }

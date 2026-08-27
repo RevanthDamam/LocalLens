@@ -4,9 +4,9 @@ The direct repository production build completed successfully after the React re
 
 Browser verification confirmed that the redesigned home page, discovery workspace, full-map route, and merchant-access route render without a client-side crash. The map loads its Leaflet base layer and category controls correctly.
 
-The local preview intentionally showed an empty discovery register because the new Node.js service requires a real PostgreSQL `DATABASE_URL` and `JWT_SECRET` in `backend/.env`. No PostgreSQL credentials were present in the repository, so authenticated API, persistence, migration, and data-retention checks remain the final environment-dependent validation step.
+The deployed Node API now uses the connected Supabase project’s Auth service and PostgreSQL-backed data API, so a direct database password, custom JWT secret, and bespoke schema migration are neither required nor stored in the repository. Merchant writes remain protected by Supabase sessions and the existing row-level security policies.
 
-The production URL was still serving the former Locably interface immediately after the repository workspace split. The root Vercel configuration now installs both workspaces, runs the delegated frontend build, and serves `frontend/dist`; its deployment commit is `d833487`. The production URL must complete that new deployment before it can display the redesigned CornerStores frontend.
+The root Vercel configuration installs both workspaces, builds `frontend/dist`, and routes `/api/*` to the Node serverless adapter before the SPA fallback. This keeps production React routes, merchant routes, and API responses on the same origin.
 
 The active Vercel Git project was refreshed and the current `main` build was verified. The deployed static frontend initially received Vercel's HTML fallback on `/api/shops`, which made the prior response parser set an undefined shop collection and emptied the React root. The frontend API client now rejects non-JSON API responses and enforces array-shaped shop and item collections. A direct Vercel production deployment (`dpl_4YkxAwnznkBUNvzvA8Gd66KzqfCw`) then updated `https://local-lens-nu.vercel.app` successfully. Browser verification confirmed that the redesigned CornerStores field-guide home interface is now visible on the public URL.
 

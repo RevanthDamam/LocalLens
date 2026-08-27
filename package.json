@@ -1,5 +1,5 @@
 {
-  "name": "locallens",
+  "name": "cornerstores",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -10,7 +10,6 @@
     "dev:backend": "npm run dev --prefix backend",
     "build": "npm run build --prefix frontend",
     "test": "npm run test --prefix frontend",
-    "lint": "npm run lint --prefix frontend",
-    "db:migrate": "npm run migrate --prefix backend"
+    "lint": "npm run lint --prefix frontend"
   }
 }

@@ -1,16 +1,16 @@
-# CornerStores Migration Architecture
+# CornerStores Architecture
 
-The repository uses a React client in `frontend/` and a Node.js API in `backend/`, backed by PostgreSQL. The frontend calls `/api` through the Vite development proxy, so public discovery and merchant workflows remain browser-accessible without exposing database credentials.
+CornerStores separates the React experience from a compact Node.js API while retaining the existing Supabase project as its authentication and PostgreSQL data layer. The browser makes same-origin calls to `/api`; the Node service validates requests, forwards the authenticated merchant access token to Supabase, and relies on the project’s existing row-level security policies.
 
-| Concern | Current behavior | Repository-native replacement |
-| --- | --- | --- |
-| Public discovery | Browser selects `shops` and `shop_items` directly | `GET /api/shops`, `GET /api/shops/:id`, and `GET /api/shops/:id/items` |
-| Merchant registration | Supabase Auth signup plus `profiles` insert | `POST /api/auth/register` creates a password-hashed user and profile in one transaction |
-| Merchant login | Supabase Auth password login and persisted session | `POST /api/auth/login` returns a signed JWT stored only in browser local storage |
-| Merchant profile | Direct profile update plus auth metadata update | `GET` and `PUT /api/profiles/me` return and update the same public display fields |
-| Shop management | Direct owner-scoped `shops` mutations | Owner-verified CRUD under `/api/shops` |
-| Item management | Direct owner-scoped `shop_items` mutations | Owner-verified CRUD under `/api/shops/:shopId/items` and `/api/shops/items/:itemId` |
+| Concern | Current implementation |
+| --- | --- |
+| Public discovery | React calls `GET /api/shops`, shop detail, and offering routes through the Node API. |
+| Merchant authentication | `/api/auth` delegates registration, password sign-in, and session lookup to Supabase Auth. |
+| Merchant ownership | The API creates request-scoped Supabase clients using the merchant bearer token; existing RLS policies enforce ownership. |
+| Profiles, shops, and items | The API reads and writes the existing PostgreSQL-backed `profiles`, `shops`, and `shop_items` tables. |
+| Merchant location picker | Authenticated area search is routed through `/api/locations/search`; the frontend moves a fixed center-pin map to the match and saves its centered coordinates. |
+| Production delivery | Vercel serves `frontend/dist` and routes `/api/*` to the thin Express serverless adapter in `api/[...path].js`. |
 
-The PostgreSQL migration preserves the existing user-facing fields: profile display name and avatar; shop owner, name, category, address, description, image, rating, price level, open status, phone, latitude, and longitude; and shop-item name, description, price, image, and popularity. The new `users` table replaces the Supabase Auth dependency and holds only the credential fields needed by the Node.js service.
+The active data contract deliberately retains `address`, `latitude`, and `longitude` on shops. The location picker only improves how those established fields are chosen; it does not add schema changes or replace the storefront save flow.
 
-The React app will receive a compatibility-shaped authenticated user with `id`, `email`, and `user_metadata`. This allows the existing merchant experience to keep its current data vocabulary while making the transport layer independent of Supabase.
+The backend keeps the runtime focused on `@supabase/supabase-js`, Express, Zod, CORS, and dotenv. The former `pg` pool, custom schema migration runner, custom password/JWT packages, and unused browser-side Supabase client were retired because they did not participate in the deployed runtime and could mislead future maintenance.

@@ -5,11 +5,14 @@ import { createSupabaseClient, assertSupabase } from "../supabase/client.js";
 import { requireAuth } from "../middleware/auth.js";
 import { asyncHandler, badRequest } from "../lib/http.js";
 import { serializeUser } from "../lib/serializers.js";
+import { rateLimit } from "../middleware/security.js";
 
 const router = Router();
 const credentialsSchema = z.object({ email: z.string().trim().email().max(320), password: z.string().min(6).max(128) });
+const registerLimit = rateLimit({ limit: 5, windowMs: 15 * 60 * 1000 });
+const loginLimit = rateLimit({ limit: 10, windowMs: 15 * 60 * 1000 });
 
-router.post("/register", asyncHandler(async (req, res) => {
+router.post("/register", registerLimit, asyncHandler(async (req, res) => {
   const { email, password } = credentialsSchema.extend({ display_name: z.string().trim().min(1).max(120).optional() }).parse(req.body);
   const client = createSupabaseClient();
   const displayName = req.body.display_name?.trim() || email.split("@")[0];
@@ -18,7 +21,7 @@ router.post("/register", asyncHandler(async (req, res) => {
   res.status(201).json({ token: data.session?.access_token || null, user: serializeUser(data.user) });
 }));
 
-router.post("/login", asyncHandler(async (req, res) => {
+router.post("/login", loginLimit, asyncHandler(async (req, res) => {
   const { email, password } = credentialsSchema.parse(req.body);
   const client = createSupabaseClient();
   const data = assertSupabase(await client.auth.signInWithPassword({ email: email.toLowerCase(), password }));

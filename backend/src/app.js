@@ -7,12 +7,16 @@ import locationRoutes from "./routes/locations.js";
 import profileRoutes from "./routes/profiles.js";
 import shopRoutes from "./routes/shops.js";
 import { errorHandler, notFound } from "./lib/http.js";
+import { apiSecurity } from "./middleware/security.js";
 
 const app = express();
 const origins = env.CORS_ORIGIN.split(",").map((origin) => origin.trim()).filter(Boolean);
 
+app.disable("x-powered-by");
+app.set("trust proxy", 1);
 app.use(cors({ origin: origins, methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], allowedHeaders: ["Content-Type", "Authorization"] }));
-app.use(express.json({ limit: "2mb" }));
+app.use(apiSecurity);
+app.use(express.json({ limit: "2mb", strict: true }));
 app.get("/api/health", (_req, res) => res.json({ status: "ok", database: "supabase-postgres" }));
 app.use("/api/auth", authRoutes);
 app.use("/api/locations", locationRoutes);
