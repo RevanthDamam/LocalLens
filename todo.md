@@ -12,6 +12,12 @@
 - [x] Update location search and merchant instructions to fly the map to an area and save the centered coordinates.
 - [x] Validate and deploy the refined merchant location-selection flow.
 
+## Merchant structured location search
+
+- [ ] Prevent location search from submitting or resetting the parent shop-listing form.
+- [ ] Add country, state or region, city, and area inputs above the map for structured area search.
+- [ ] Recenter the fixed-pin map from the structured search and validate the preserved listing state.
+
 ## CornerStores rename
 
 - [x] Rename the GitHub repository and product-facing application branding to CornerStores.
