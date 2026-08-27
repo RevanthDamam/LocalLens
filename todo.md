@@ -2,9 +2,9 @@
 
 ## Merchant location picker
 
-- [ ] Add an interactive map picker to the merchant shop-listing workflow.
-- [ ] Add address search that narrows the map to an address and saves selected coordinates and address text.
-- [ ] Validate listing updates through the existing Node API without changing the backend data model.
+- [x] Add an interactive map picker to the merchant shop-listing workflow.
+- [x] Add address search that narrows the map to an address and saves selected coordinates and address text.
+- [x] Validate the frontend build and deployed, protected address-search route while preserving the existing shop coordinate payload.
 
 ## CornerStores rename
 
