@@ -1,4 +1,4 @@
-# LocalLens Migration Architecture
+# CornerStores Migration Architecture
 
 The repository uses a React client in `frontend/` and a Node.js API in `backend/`, backed by PostgreSQL. The frontend calls `/api` through the Vite development proxy, so public discovery and merchant workflows remain browser-accessible without exposing database credentials.
 

@@ -1,4 +1,4 @@
-# LocalLens API
+# CornerStores API
 
 This folder contains the repository-native Node.js API that replaces browser-direct database access. It uses Express, Supabase Auth for merchant sessions, and the connected Supabase PostgreSQL tables for local listings, profiles, and offerings.
 

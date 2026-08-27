@@ -1,4 +1,4 @@
-/** Cartographic Editorial: merchant-owned shop and item management through the LocalLens API. */
+/** Cartographic Editorial: merchant-owned shop and item management through the CornerStores API. */
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { shopsApi, type ApiShop, type ApiShopItem } from "@/lib/api";

@@ -1,11 +1,11 @@
-# CornerStore Redesign and Backend Migration
+# CornerStores Redesign and Backend Migration
 
-## LocalLens restoration
+## CornerStores rename
 
-- [x] Restore the GitHub repository name and product-facing application branding to LocalLens.
-- [x] Validate the restored repository identity and production-site continuity.
+- [ ] Rename the GitHub repository and product-facing application branding to CornerStores.
+- [ ] Validate the CornerStores source build and confirm production continuity.
 
-- [x] Inspect the connected Supabase project and use its supported database configuration for CornerStore.
+- [x] Inspect the connected Supabase project and use its supported database configuration for CornerStores.
 
 - [x] Configure the Node.js API to use Supabase Auth and the existing Supabase PostgreSQL-backed schema without storing a database password.
 - [x] Deploy the Node.js API and connect the production frontend to it.
@@ -17,8 +17,8 @@
 - [x] Point the deployed frontend at the production Node.js API.
 - [x] Verify public listing reads against the production database.
 
-- [x] Inspect the connected Vercel deployment and make the current CornerStore frontend workspace live.
-- [x] Verify the deployed site presents the redesigned CornerStore interface.
+- [x] Inspect the connected Vercel deployment and make the current CornerStores frontend workspace live.
+- [x] Verify the deployed site presents the redesigned CornerStores interface.
 
 - [x] Verify the active frontend deployment source and fix the configuration so the redesigned interface is visible.
 

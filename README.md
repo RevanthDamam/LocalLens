@@ -1,6 +1,6 @@
-# LocalLens
+# CornerStores
 
-LocalLens is a React field guide for local-business discovery, rebuilt with a **Cartographic Editorial** interface and a repository-native **Node.js + PostgreSQL** backend. Public visitors can browse a live shop register by category, proximity, and map location. Merchants can create an account, manage one shop listing, and maintain its current offering list.
+CornerStores is a React field guide for local-business discovery, rebuilt with a **Cartographic Editorial** interface and a repository-native **Node.js + PostgreSQL** backend. Public visitors can browse a live shop register by category, proximity, and map location. Merchants can create an account, manage one shop listing, and maintain its current offering list.
 
 ## Architecture
 

@@ -1,4 +1,4 @@
-/** LocalLens API: Node.js service layer using Supabase Auth and the connected PostgreSQL-backed data API. */
+/** CornerStores API: Node.js service layer using Supabase Auth and the connected PostgreSQL-backed data API. */
 import express from "express";
 import cors from "cors";
 import { env } from "./config/env.js";

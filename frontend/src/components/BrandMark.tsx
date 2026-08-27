@@ -1,4 +1,4 @@
-/** Cartographic Editorial: LocalLens lens-and-pin symbol for navigation and compact identity moments. */
+/** Cartographic Editorial: CornerStores lens-and-pin symbol for navigation and compact identity moments. */
 import { cn } from "@/lib/utils";
 
 export function BrandMark({ className, inverse = false }: { className?: string; inverse?: boolean }) {

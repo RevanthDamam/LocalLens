@@ -1,4 +1,4 @@
-/** LocalLens API: merchant authentication delegates credentials to Supabase Auth while preserving the frontend response contract. */
+/** CornerStores API: merchant authentication delegates credentials to Supabase Auth while preserving the frontend response contract. */
 import { Router } from "express";
 import { z } from "zod";
 import { createSupabaseClient, assertSupabase } from "../supabase/client.js";

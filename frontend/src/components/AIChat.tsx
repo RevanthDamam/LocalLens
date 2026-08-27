@@ -8,9 +8,9 @@ import { chat, BULLET_INSTRUCTION, type OllamaMessage } from "@/lib/ollama";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-const SYSTEM_PROMPT = `You are a helpful assistant for LocalLens, a local shop discovery app.
+const SYSTEM_PROMPT = `You are a helpful assistant for CornerStores, a local shop discovery app.
 ${BULLET_INSTRUCTION}
-Answer ONLY about: finding local shops, categories, explore, hours, and how to use the app. If the user asks about anything else (sports, news, general knowledge, other websites, etc.), reply with exactly: "I can only help with LocalLens and local shops. I can't answer other topics." in one short sentence. Do not answer off-topic questions.`;
+Answer ONLY about: finding local shops, categories, explore, hours, and how to use the app. If the user asks about anything else (sports, news, general knowledge, other websites, etc.), reply with exactly: "I can only help with CornerStores and local shops. I can't answer other topics." in one short sentence. Do not answer off-topic questions.`;
 
 export function AIChat() {
   const [open, setOpen] = useState(false);
@@ -94,7 +94,7 @@ export function AIChat() {
           <SheetHeader className="pb-2">
             <SheetTitle className="flex items-center gap-2 font-display text-lg">
               <Bot className="h-5 w-5 text-primary" />
-              LocalLens Assistant
+              CornerStores Assistant
             </SheetTitle>
             <p className="text-xs text-muted-foreground">Short, bullet-point answers</p>
           </SheetHeader>
