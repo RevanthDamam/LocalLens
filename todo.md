@@ -4,7 +4,7 @@
 
 - [x] Rename the GitHub repository and product-facing application branding to CornerStores.
 - [x] Validate the CornerStores source build and confirm production continuity.
-- [ ] Refresh the existing Vercel project's Git link or deploy the approved CornerStores source artifact while retaining the production domain.
+- [x] Refresh the existing Vercel project's Git link or deploy the approved CornerStores source artifact while retaining the production domain.
 
 - [x] Inspect the connected Supabase project and use its supported database configuration for CornerStores.
 
